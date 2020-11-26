@@ -8,7 +8,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "static")));
 app.set("view engine", "ejs");
 
-app.get("", function(request, response){
+app.get("/", function(request, response){
     response.render("landing");
 });
 

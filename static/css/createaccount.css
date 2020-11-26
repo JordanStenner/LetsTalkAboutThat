@@ -138,6 +138,10 @@ body {
   border-radius: 3;
 }
 
+form .error {
+  color: #ff0000;
+}
+
 .goto-login {
   float: left;
   color: mediumslateblue;

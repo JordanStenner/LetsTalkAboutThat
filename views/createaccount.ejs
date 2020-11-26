@@ -10,6 +10,9 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <!-- JQuery Validation plugin -->
+    <script src="vendor/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="/scripts/form-validation.js"></script>
 
 <title>LTAT - Online Forum</title>
 
@@ -31,7 +34,7 @@
   <main role="main" class="inner cover">
     <h1 class="heading">Let's Talk About That</h1>
   </main>
-  <form class="form-signin">
+  <form class="form-signin" name="registration">
     <h1 class="h3 mb-3 font-weight-normal">Create an account</h1>
     <label for="inputUsername" class="sr-only" id="general">Email address</label>
     <input type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
@@ -44,7 +47,7 @@
     <label for="inputPasswordConfirm" class="sr-only" id="password">Password</label>
     <input type="password" id="inputPasswordConfirm" class="form-control" placeholder="Confirm Password" required>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    <a href="#" class="goto-login">Already have an account? Log in now</a>
+    <a href="/" class="goto-login">Already have an account? Log in now</a>
   </form>
 
     <footer class="mastfoot mt-auto">
