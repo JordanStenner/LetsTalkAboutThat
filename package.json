@@ -1,0 +1,19 @@
+{
+  "name": "letstalkaboutthat",
+  "version": "1.0.0",
+  "description": "Forum website with livechat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JordanStenner/LetsTalkAboutThat.git"
+  },
+  "author": "Jordan Stenner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JordanStenner/LetsTalkAboutThat/issues"
+  },
+  "homepage": "https://github.com/JordanStenner/LetsTalkAboutThat#readme"
+}

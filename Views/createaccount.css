@@ -120,13 +120,19 @@ body {
   z-index: 2;
 }
 
-.form-signin #password {
-  margin-bottom: 10px;
+.form-signin input[type="email"]  {
+  margin-bottom: 13px;
   margin-top: 2px;
   border-radius: 3;
 }
 
-.form-signin #general {
+.form-signin input[type="password"]  {
+  margin-bottom: 8px;
+  margin-top: 5px;
+  border-radius: 3;
+}
+
+.form-signin input[type="text"]  {
   margin-bottom: 10px;
   margin-top: 8px;
   border-radius: 3;
@@ -135,4 +141,12 @@ body {
 .goto-login {
   float: left;
   color: mediumslateblue;
+}
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: white;
 }
