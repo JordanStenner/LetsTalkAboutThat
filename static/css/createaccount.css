@@ -154,3 +154,9 @@ hr {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   background-color: white;
 }
+
+#error{
+  color: red;
+  font-size: small;
+  margin-bottom: 2px;
+}

@@ -47,7 +47,11 @@
     <label for="inputPasswordConfirm" class="sr-only" id="password">Password</label>
     <input type="password" id="inputPasswordConfirm" class="form-control" placeholder="Confirm Password" name="confirmPassword" required>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    <a href="/" class="goto-login">Already have an account? Log in now</a>
+    <a href="/" class="goto-login">Already have an account? Log in now</a><br>
+
+    <% for (i=0; i<error.length; i++) { %>
+      <p id="error" name="error"><%= error[i] %></p>
+    <% } %>
   </form>
 
     <footer class="mastfoot mt-auto">

@@ -19,6 +19,7 @@ app.use(express.urlencoded({extended: true}));
 app.get("/", routes.loadHomepage);
 app.get("/createaccount", routes.createAccount);
 app.post("/register", routes.register);
+app.post("/login", routes.login);
 
 app.listen(port, function(){
     console.log("Listening on " + port);
