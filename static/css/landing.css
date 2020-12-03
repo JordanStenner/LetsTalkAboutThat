@@ -133,3 +133,9 @@ body {
   float: left;
   color: mediumslateblue;
 }
+
+#error{
+  color: red;
+  font-size: small;
+  margin-bottom: 2px;
+}

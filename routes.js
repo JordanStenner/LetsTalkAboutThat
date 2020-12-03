@@ -10,17 +10,22 @@ async function login(request, response){
 
     User.findOne({email: email}, function(err, user){
         if(err) throw err;
+        
+        if(user == null){
+            console.log("User does not exist");
+            return response.render("landing", {error:"User does not exist"});
+        }
 
         user.comparePassword(password, function(err, isMatch){
             if(err) throw err;
 
             if(isMatch == true){
                 console.log("passwords match");
-                return response.render("landing");
+                return response.render("landing", {error:""});
             }
             else{
                 console.log("passwords dont match");
-                return response.render("createaccount", {error:""});
+                return response.render("landing", {error:"Incorrect Password"});
             }
         })
     });
@@ -49,13 +54,12 @@ async function register(request, response){
                 return response.status(500).send();
             }
             console.log("Account created for: " + email);
-            response.redirect('/');
+            response.render("landing", {error:""});
             return response.status(200).send();  
         });
     }
     else{
         if(user){
-            console.log(user.username);
             if(user.username == username){
                 errorArr.push("An account with that username already exists");
             }
