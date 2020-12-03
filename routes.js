@@ -1,7 +1,11 @@
 let User = require("./static/schemas/user_schema");
 
-async function loadHomepage(request, response){
-    response.render("landing");
+async function loadLanding(request, response){
+    response.render("landing", {error:""});
+}
+
+async function homepage(request, response){
+    response.render("homepage");
 }
 
 async function login(request, response){
@@ -21,7 +25,7 @@ async function login(request, response){
 
             if(isMatch == true){
                 console.log("passwords match");
-                return response.render("landing", {error:""});
+                return response.render("homepage");
             }
             else{
                 console.log("passwords dont match");
@@ -30,6 +34,11 @@ async function login(request, response){
         })
     });
     //response.redirect("/");
+}
+
+async function logout(request, response){
+    //Remove session data
+    return response.render("landing", {error:""});
 }
 
 async function register(request, response){
@@ -54,7 +63,9 @@ async function register(request, response){
                 return response.status(500).send();
             }
             console.log("Account created for: " + email);
-            response.render("landing", {error:""});
+            // let newSession = request.session;
+            // newSession.email = newuser.email;
+            response.redirect("/home");
             return response.status(200).send();  
         });
     }
@@ -81,7 +92,9 @@ async function createAccount(request, response){
     response.render("createaccount", {error:""});
 }
 
-module.exports.loadHomepage = loadHomepage;
+module.exports.loadLanding = loadLanding;
 module.exports.createAccount = createAccount;
 module.exports.register = register;
 module.exports.login = login;
+module.exports.homepage = homepage;
+module.exports.logout = logout;

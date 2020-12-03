@@ -1,6 +1,7 @@
 let routes = require("./routes");
 
 let express = require("express");
+var session = require("express-session");
 let mongoose = require("mongoose");
 let path = require("path");
 
@@ -16,10 +17,18 @@ app.set("view engine", "ejs");
 
 app.use(express.urlencoded({extended: true}));
 
-app.get("/", routes.loadHomepage);
+// app.use(session({
+    
+// }));
+
+app.get("/", routes.loadLanding);
 app.get("/createaccount", routes.createAccount);
+app.get("/home", routes.homepage);
+
 app.post("/register", routes.register);
 app.post("/login", routes.login);
+app.get("/logout", routes.logout);
+
 
 app.listen(port, function(){
     console.log("Listening on " + port);

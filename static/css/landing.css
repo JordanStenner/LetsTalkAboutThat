@@ -139,3 +139,7 @@ body {
   font-size: small;
   margin-bottom: 2px;
 }
+
+.nav-item{
+  margin-left: 1rem;
+}
