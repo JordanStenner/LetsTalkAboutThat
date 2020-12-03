@@ -17,9 +17,15 @@ app.set("view engine", "ejs");
 
 app.use(express.urlencoded({extended: true}));
 
-// app.use(session({
-    
-// }));
+app.use(session({     
+    key: 'user_id',
+    secret: 'SECRET',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        expires: 600000
+    } 
+}));
 
 app.get("/", routes.loadLanding);
 app.get("/createaccount", routes.createAccount);

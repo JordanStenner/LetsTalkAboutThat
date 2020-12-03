@@ -5,6 +5,11 @@ async function loadLanding(request, response){
 }
 
 async function homepage(request, response){
+    if(request.session.email){
+        let msg = request.session.email;
+        console.log(msg)
+    }
+
     response.render("homepage");
 }
 
@@ -63,8 +68,8 @@ async function register(request, response){
                 return response.status(500).send();
             }
             console.log("Account created for: " + email);
-            // let newSession = request.session;
-            // newSession.email = newuser.email;
+            let newSession = request.session;
+            newSession.email = newuser.email;
             response.redirect("/home");
             return response.status(200).send();  
         });
