@@ -46,20 +46,22 @@
 
     <!-- Forum List -->
     <div class="inner-main-body p-sm-3 collapse forum-content show">
+      <% for (i=0; i<topicArr.length; i++) {  %>
       <div class="card mb-2">
           <div class="card-body p-2 p-sm-3">
               <div class="media forum-item">
-                <img class="topic-icon" src="/images/politics.png" alt="Politics">
+                <img class="topic-icon" src="/images/<%= topicArr[i]["icon_name"] %>.png" alt="Politics">
                   <div class="media-body">
-                      <h6 class="topic-title">Topic #1</h6>
-                      <p class="topic-description">
-                          lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet
+                      <h6 class="topic-title" name="topic_title"><%= topicArr[i]["topic_title"] %></h6>
+                      <p class="topic-description" name="topic_description">
+                        <%= topicArr[i]["topic_description"] %>
                       </p>
                       <p class="text-muted"><a href="#">Join Conversation</a></p>
                   </div>
               </div>
           </div>
       </div>
+      <% } %>
   </div>
   <!-- /Forum List -->
   </main>

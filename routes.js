@@ -1,5 +1,6 @@
 const e = require("express");
 let User = require("./static/schemas/user_schema");
+let Topic = require("./static/schemas/topic_schema");
 
 async function loadLanding(request, response){
     if(request.session.email){
@@ -15,7 +16,18 @@ async function homepage(request, response){
     let user; 
     if(request.session.email){
         user = request.session.username;
-        return response.render("homepage", {username: user});
+        let topicArr = [];
+
+        await Topic.find({}, function(err, topic){
+            if(err) throw err;
+            for(i = 0; i < topic.length; i++){
+                topicArr.push(topic[i]);
+                console.log(topic[i]["topic_title"]);
+            }
+
+        });
+
+        return response.render("homepage", {username: user, topicArr: topicArr});
     }
     else{
         return response.redirect("/");
