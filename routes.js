@@ -1,16 +1,26 @@
+const e = require("express");
 let User = require("./static/schemas/user_schema");
 
 async function loadLanding(request, response){
-    response.render("landing", {error:""});
+    if(request.session.email){
+        return response.redirect("/home");
+    }
+    else{
+        return response.render("landing", {error:""});
+    }
+
 }
 
 async function homepage(request, response){
+    let user; 
     if(request.session.email){
-        let msg = request.session.email;
-        console.log(msg)
+        user = request.session.username;
+        return response.render("homepage", {username: user});
+    }
+    else{
+        return response.redirect("/");
     }
 
-    response.render("homepage");
 }
 
 async function login(request, response){
@@ -30,7 +40,9 @@ async function login(request, response){
 
             if(isMatch == true){
                 console.log("passwords match");
-                return response.render("homepage");
+                request.session.username = user.username;
+                request.session.email = user.email;
+                return response.redirect("/home");
             }
             else{
                 console.log("passwords dont match");
@@ -43,6 +55,7 @@ async function login(request, response){
 
 async function logout(request, response){
     //Remove session data
+    request.session.destroy();
     return response.render("landing", {error:""});
 }
 
@@ -68,8 +81,8 @@ async function register(request, response){
                 return response.status(500).send();
             }
             console.log("Account created for: " + email);
-            let newSession = request.session;
-            newSession.email = newuser.email;
+            request.session.username = newuser.username;
+            request.session.email = newuser.email;
             response.redirect("/home");
             return response.status(200).send();  
         });
@@ -94,7 +107,12 @@ async function register(request, response){
 
 
 async function createAccount(request, response){
-    response.render("createaccount", {error:""});
+    if(request.session.email){
+        return response.redirect("/home")
+    }
+    else{
+        return response.render("createaccount", {error:""});
+    }
 }
 
 module.exports.loadLanding = loadLanding;
