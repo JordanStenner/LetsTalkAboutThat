@@ -26,13 +26,11 @@ async function homepage(request, response){
             }
 
         });
-
         return response.render("homepage", {username: user, topicArr: topicArr});
     }
     else{
         return response.redirect("/");
     }
-
 }
 
 async function login(request, response){
