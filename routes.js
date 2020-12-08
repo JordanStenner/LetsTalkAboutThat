@@ -68,7 +68,7 @@ async function login(request, response){
 
 async function logout(request, response){
     //Remove session data
-    request.session.destroy();
+    Server_Logic.endSession(request)
     return response.render("landing", {error:""});
 }
 
