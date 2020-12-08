@@ -23,9 +23,10 @@ function registerAccount(request, response){
     return statusCode;
 }
 
-// async function getUser(username, email){
-//     let user = await User.findOne({$or: [{username: username}, {email: email}]});
-//     return user;
-// }
+async function getUser(username, email){
+    let user = await User.findOne({$or: [{username: username}, {email: email}]});
+    return user;
+}
 
 module.exports.registerAccount = registerAccount;
+module.exports.getUser = getUser;

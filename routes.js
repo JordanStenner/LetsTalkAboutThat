@@ -79,7 +79,7 @@ async function register(request, response){
     let password = request.body.password;
     let confirmPassword = request.body.confirmPassword;
 
-    let user = await User.findOne({$or: [{username: username}, {email: email}]});
+    let user = await User_Logic.getUser(username, email);
 
     if(!user){
         if(password != confirmPassword){
