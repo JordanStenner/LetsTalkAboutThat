@@ -2,23 +2,25 @@ let User = require("../schemas/user_schema");
 
 //* Function for account registration */
 function registerAccount(request, response){
+    var statusCode = 0;
     let username = request.body.username.toLowerCase();
     let email = request.body.email.toLowerCase();
     let password = request.body.password;
-    let confirmPassword = request.body.confirmPassword;
+
     //User does not yet exist, so create the new account
-    let newuser = new User();
-    newuser.username = username;
-    newuser.email = email;
-    newuser.password = password;
-    newuser.save(function(err, savedUser){
-        if(err){
-            console.log(err);
-            return response.status(500);
+    let newuser = new User({username: username, 
+                            email: email,
+                            password: password});
+    newuser.save(function (err){
+        if (err) {
+            console.log("Error is :" + err);
+            statusCode = 500
+            return statusCode;
         }
-        console.log("Account created for: " + email);
-        return response.status(200);
     });
+    console.log("Account created for: " + newuser.email);
+    statusCode = 200
+    return statusCode;
 }
 
 // async function getUser(username, email){

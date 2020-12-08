@@ -2,6 +2,9 @@ const e = require("express");
 let User = require("./static/schemas/user_schema");
 let Topic = require("./static/schemas/topic_schema");
 
+let User_Logic = require("./static/scripts/user_logic");
+let Server_Logic = require("./static/scripts/server_logic");
+
 async function loadLanding(request, response){
     if(request.session.email){
         return response.redirect("/home");
@@ -22,7 +25,7 @@ async function homepage(request, response){
             if(err) throw err;
             for(i = 0; i < topic.length; i++){
                 topicArr.push(topic[i]);
-                console.log(topic[i]["topic_title"]);
+                //console.log(topic[i]["topic_title"]);
             }
 
         });
@@ -79,23 +82,22 @@ async function register(request, response){
     let user = await User.findOne({$or: [{username: username}, {email: email}]});
 
     if(!user){
-        //User does not yet exist, so create the new account
-        let newuser = new User();
-
-        newuser.username = username;
-        newuser.email = email;
-        newuser.password = password;
-        newuser.save(function(err, savedUser){
-            if(err){
-                console.log(err);
+        if(password != confirmPassword){
+            errorArr.push("Both passwords must match");
+            return response.render("createaccount", {error:errorArr});
+        }
+        else {
+            let statusCode = User_Logic.registerAccount(request, response);
+            console.log(statusCode);
+            if(statusCode == 200){
+                Server_Logic.setSession(request, username, email);
+                console.log(request.session.username);
+                return response.redirect("/home");
+            }
+            else{
                 return response.status(500).send();
             }
-            console.log("Account created for: " + email);
-            request.session.username = newuser.username;
-            request.session.email = newuser.email;
-            response.redirect("/home");
-            return response.status(200).send();  
-        });
+        }
     }
     else{
         if(user){
@@ -104,9 +106,6 @@ async function register(request, response){
             }
             if(user.email == email){
                 errorArr.push("An account with that email already exists");
-            }
-            if(password != confirmPassword){
-                errorArr.push("Both passwords must match");
             }
             console.log(errorArr);
             return response.render("createaccount", {error: errorArr});
