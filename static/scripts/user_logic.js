@@ -25,5 +25,12 @@ async function getUser(username, email){
     return user;
 }
 
+async function getUserUsingEmail(email){
+    let user = await User.findOne({email: email});
+    return user;
+}
+
+
 module.exports.registerAccount = registerAccount;
 module.exports.getUser = getUser;
+module.exports.getUserUsingEmail = getUserUsingEmail;

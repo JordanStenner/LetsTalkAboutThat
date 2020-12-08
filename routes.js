@@ -40,29 +40,27 @@ async function login(request, response){
     let email = request.body.email.toLowerCase();
     let password = request.body.password;
 
-    User.findOne({email: email}, function(err, user){
-        if(err) throw err;
+    let user = await User_Logic.getUserUsingEmail(email);
         
-        if(user == null){
-            console.log("User does not exist");
-            return response.render("landing", {error:"User does not exist"});
+    if(user == null){
+        console.log("User does not exist");
+        return response.render("landing", {error:"User does not exist"});
+    }
+
+    user.comparePassword(password, function(err, isMatch){
+        if(err) throw err;
+
+        if(isMatch == true){
+            console.log("passwords match");
+            Server_Logic.setSession(request, user.username, email)
+            return response.redirect("/home");
         }
-
-        user.comparePassword(password, function(err, isMatch){
-            if(err) throw err;
-
-            if(isMatch == true){
-                console.log("passwords match");
-                request.session.username = user.username;
-                request.session.email = user.email;
-                return response.redirect("/home");
-            }
-            else{
-                console.log("passwords dont match");
-                return response.render("landing", {error:"Incorrect Password"});
-            }
-        })
-    });
+        else{
+            console.log("passwords dont match");
+            return response.render("landing", {error:"Incorrect Password"});
+        }
+    })
+    
     //response.redirect("/");
 }
 
