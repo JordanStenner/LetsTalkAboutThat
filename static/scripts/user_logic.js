@@ -1,11 +1,8 @@
 let User = require("../schemas/user_schema");
 
 //* Function for account registration */
-function registerAccount(request, response){
+function registerAccount(request, username, email, password){
     var statusCode = 0;
-    let username = request.body.username.toLowerCase();
-    let email = request.body.email.toLowerCase();
-    let password = request.body.password;
 
     //User does not yet exist, so create the new account
     let newuser = new User({username: username, 
