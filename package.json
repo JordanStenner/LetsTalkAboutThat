@@ -2,9 +2,9 @@
   "name": "letstalkaboutthat",
   "version": "1.0.0",
   "description": "Forum website with livechat",
-  "main": "index.js",
+  "main": "startserver.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -ui tdd test/"
   },
   "repository": {
     "type": "git",
@@ -18,10 +18,13 @@
   "homepage": "https://github.com/JordanStenner/LetsTalkAboutThat#readme",
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "jquery-validation": "^1.19.2",
+    "mocha": "^8.2.1",
     "mongoose": "^5.11.0",
     "path": "^0.12.7",
     "session": "^0.1.0"
