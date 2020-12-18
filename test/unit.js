@@ -9,12 +9,12 @@ mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true});
 console.log(mongoose.connection.readyState);
 
 suite("Tests for User Logic", function(){
-
+    var testEmail ="Testing@Unit.Test";
+    var testUsername = "TestUser";
     setup(async function(){
-        let testEmail = "Testing@Unit.Test";
         try {
             const newuser = new User({
-                username: "TestUser", 
+                username: testUsername, 
                 email: testEmail,
                 password: "testPassword"
             })
@@ -27,28 +27,59 @@ suite("Tests for User Logic", function(){
     });
 
     teardown(async function(){
-        let testEmail = "Testing@Unit.Test";
-        await User.deleteOne({email: testEmail}, function(err){
-            if(err) console.log(err);
-            console.log("Test user deleted");
-        });
+        let testUser = await User.findOne({email: testEmail});
+        if(!testUser){
+            console.log("User already deleted by test")
+        }
+        else{
+            await User.deleteOne({email: testEmail}, function(err){
+                if(err) console.log(err);
+                console.log("Test user deleted");
+            });
+        }
+
     });
     
     test("Test the registerAccount function", async function(){
-        let testEmail = "Testing1@Unit.Test";
-        let statusCode = await User_Logic.registerAccount("TestUser1", testEmail, "Testpassword");
-        let newuser = await User.findOne({email: testEmail});
+        let testRegisterEmail = "Testing1@Unit.Test";
+        let statusCode = await User_Logic.registerAccount("TestUser1", testRegisterEmail, "Testpassword");
+        let newuser = await User.findOne({email: testRegisterEmail});
         //console.log("User email is: " +newuser.email);
 
         chai.assert.equal(statusCode, 200, "Status code should be 200 after creating a user");
-        chai.assert.equal(newuser.email, testEmail, "User email should match - Successfully saved to database");
+        chai.assert.equal(newuser.email, testRegisterEmail, "User email should match - Successfully saved to database");
 
         try{
-            await User.deleteOne({email: testEmail});
+            await User.deleteOne({email: testRegisterEmail});
         }
         catch (err){
             console.log("Error" + err);
         }
 
         });
+
+    test("Test the getUser function", async function(){
+        let user = await User_Logic.getUser(testUsername, testEmail);
+
+        chai.assert.equal(user.email, testEmail, "Emails should match indicating that a user has been found");
+    });
+
+    test("Test the getUserUsingEmail function", async function(){
+        let user = await User_Logic.getUserUsingEmail(testEmail);
+
+        chai.assert.equal(user.email, testEmail, "Emails should match indicating that a user has been found");
+    });
+
+     test("Test the removeUser function", async function(){
+         let removed = false;
+        await User_Logic.removeUser(testEmail);
+
+        let testUser = await User.findOne({email: testEmail});
+        if(!testUser){
+            removed = true;
+        }
+
+        chai.assert.equal(removed, true, "User has not been removed from the database");
+     });
+
 });

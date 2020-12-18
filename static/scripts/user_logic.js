@@ -5,18 +5,6 @@ async function registerAccount(username, email, password){
     var statusCode = 0;
 
     //User does not yet exist, so create the new account
-    // let newuser = new User({username: username, 
-    //                         email: email,
-    //                         password: password});
-    // newuser.save(function (err){
-    //     if (err) {
-    //         console.log("Error is :" + err);
-    //         statusCode = 500
-    //         return statusCode;
-    //     }
-    // });
-    // console.log("Account created for: " + newuser.email);
-
     try {
         const newuser = new User({
             username: username, 
