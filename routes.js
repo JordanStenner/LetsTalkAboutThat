@@ -123,16 +123,18 @@ async function createAccount(request, response){
 async function posts(request, response){
     let user; 
     let topicName = request.params.topicname;
+
     if(request.session.email){
         user = request.session.username;
-        let topicID = Post_Logic.getTopic(topicName)._id;
-        let postsArr = [];
+        let topic = await Post_Logic.getTopic(topicName);
 
-        await Post.find({topic_title: topicID}, function(err, post){
+        let postsArr = [];
+        //console.log(topic._id);
+        await Post.find({topic: topic._id}, function(err, post){
             if(err) throw err;
             for(i = 0; i < post.length; i++){
                 postsArr.push(post[i]);
-                //console.log(topic[i]["topic_title"]);
+                //console.log(post[i]["topic"]);
             }
 
         });
@@ -147,6 +149,7 @@ async function createPost(request, response){
     var errorArr = [];
     let email = request.session.email;
     let topicName = request.params.topicname;
+    console.log(topicName);
     let postTitle = request.body.postTitle;
     let postContent = request.body.postContent;
 
