@@ -2,8 +2,8 @@ var mongoose = require("mongoose");
 
 var postSchema = new mongoose.Schema({
     topic: [{type: mongoose.Schema.Types.ObjectId, ref: 'Topic'}],
-    author: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-    post_title: {type: String, unique: true},
+    author: {type: String},
+    post_title: {type: String},
     post_content: {type: String}
 });
 

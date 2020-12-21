@@ -40,7 +40,7 @@
   </header>
 </div>
   <main role="main" class="inner cover">
-    <h1 class="heading">Let's Talk About What?</h1>
+    <h1 class="heading"><%= topic %></h1>
     <p class="lead">This is where forum subjects will be displayed</p>
     <p>Welcome <%= username %></p>
 
@@ -52,12 +52,11 @@
           <div class="card-body p-2 p-sm-3">
               <div class="media forum-item">
                   <div class="media-body">
-                      <h6 class="topic-title" name="topic_title"><%= postsArr[i]["topic_title"] %></h6>
-                      <p class="post-title" name="post_title"><strong><%= postsArr[i]["post_title"] %></strong></p>
+                      <h6 class="post-title" name="post_title"><%= postsArr[i]["post_title"] %></h6>
                       <p class="post-description" name="post_description">
                         <%= postsArr[i]["post_content"] %>
                       </p>
-                      <p class="post-author" name="post_author"><%= postsArr[i]["post_author"] %></p>
+                      <p class="post-author" name="post_author">Posted by <%= postsArr[i]["author"] %></p>
                       <p class="text-muted"><a href="#">Join Conversation</a></p>
                   </div>
               </div>

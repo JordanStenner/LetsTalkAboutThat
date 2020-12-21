@@ -8,8 +8,8 @@ async function createPost(topic, user, title, content){
     //User does not yet exist, so create the new account
     try {
         const newpost = new Post({
-            topic: topic._id, 
-            author: user._id, //might have to use email
+            topic: topic, 
+            author: user, //might have to use email
             post_title: title,
             post_content: content
         })

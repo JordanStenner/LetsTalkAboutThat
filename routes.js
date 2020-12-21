@@ -149,17 +149,15 @@ async function createPost(request, response){
     var errorArr = [];
     let email = request.session.email;
     let topicName = request.params.topicname;
-    console.log(topicName);
     let postTitle = request.body.postTitle;
     let postContent = request.body.postContent;
 
     let user = await User_Logic.getUserUsingEmail(email);
     let topic = await Post_Logic.getTopic(topicName);
    
-    let statusCode = await Post_Logic.createPost(topic._id, user._id, postTitle, postContent);
+    let statusCode = await Post_Logic.createPost(topic._id, user.username, postTitle, postContent);
     console.log(statusCode);
     if(statusCode == 200){
-        console.log("success!!!!!");
         return response.redirect("/posts/" + topicName);
     }
     else{
