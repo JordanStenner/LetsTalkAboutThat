@@ -1,4 +1,5 @@
 let Post = require("../schemas/post_schema");
+let Topic = require("../schemas/topic_schema");
 
 //* Function for account registration */
 async function createPost(topic, user, title, content){
@@ -14,7 +15,7 @@ async function createPost(topic, user, title, content){
         })
         let savePost = await newpost.save();
         console.log(savePost);
-        console.log("Post created for: " + newpost.author);
+        console.log("Post created for: " + savePost.author);
     }
     catch (err){
         console.log("err" + err);
@@ -28,6 +29,11 @@ async function createPost(topic, user, title, content){
 async function getPost(postTitle){
     let post = await Post.findOne({post_title: postTitle});
     return post;
+}
+
+async function getTopic(topicTitle){
+    let topic = await Topic.findOne({topic_title: topicTitle});
+    return topic;
 }
 
 async function removePost(postTitle){
@@ -44,3 +50,5 @@ async function removePost(postTitle){
 module.exports.createPost = createPost;
 module.exports.getPost = getPost;
 module.exports.removePost = removePost;
+
+module.exports.getTopic = getTopic;

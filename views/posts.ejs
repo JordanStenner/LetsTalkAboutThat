@@ -89,15 +89,14 @@
         </button>
       </div>
       <div class="modal-body">
-        <form class="form-post" method="POST" action="/">
-          <label for="post-title" class="sr-only">Title</label>
-          <input type="text" id="post-title post-form-input" class="form-control" placeholder="Post Title" name="post-title" required autofocus>
+        <form class="form-post" method="POST" action="/createpost/<%= topic %>">
+          <label for="postTitle" class="sr-only">Title</label>
+          <input type="text" id="post-title post-form-input" class="form-control" placeholder="Post Title" name="postTitle" required autofocus>
           <div class="form-outline mb-4">
-            <label class="sr-only" for="post-content">Post Content</label>
-            <textarea class="form-control" id="post-content post-form-input" rows="4" placeholder="Post Content" name="post-content" required></textarea>
+            <label class="sr-only" for="postContent">Post Content</label>
+            <textarea class="form-control" id="post-content post-form-input" rows="4" placeholder="Post Content" name="postContent" required></textarea>
           </div>
           <button class="btn btn-lg btn-dark btn-block" type="submit">Submit Post</button>
-          <p id="error" name="error"><%= error %></p>
         </form>
       </div>
       <div class="modal-footer">

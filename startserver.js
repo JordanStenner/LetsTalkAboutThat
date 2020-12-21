@@ -36,6 +36,7 @@ app.post("/register", routes.register);
 app.post("/login", routes.login);
 app.get("/logout", routes.logout);
 
+app.post("/createpost/:topicname", routes.createPost);
 
 app.listen(port, function(){
     console.log("Listening on " + port);
