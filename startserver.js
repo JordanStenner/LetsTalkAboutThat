@@ -5,11 +5,12 @@ var session = require("express-session");
 let mongoose = require("mongoose");
 let path = require("path");
 
-let url = "mongodb://localhost:27017/LetsTalkAboutThat";
+//let url = "mongodb://localhost:27017/LetsTalkAboutThat";
+let url = "mongodb+srv://JordanStenner:LTATDB@letstalkaboutthat.imvzx.mongodb.net/LetsTalkAboutThat?retryWrites=true&w=majority"
 mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true});
 
 let app = express();
-let port = 9000;
+const port = 9000;
 
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "static")));
@@ -38,7 +39,7 @@ app.get("/logout", routes.logout);
 
 app.post("/createpost/:topicname", routes.createPost);
 
-app.listen(port, function(){
+app.listen(process.env.PORT || port, function(){
     console.log("Listening on " + port);
 });
 

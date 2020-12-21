@@ -85,7 +85,7 @@ async function register(request, response){
             return response.render("createaccount", {error:errorArr});
         }
         else {
-            let statusCode = User_Logic.registerAccount(username, email, password);
+            let statusCode = await User_Logic.registerAccount(username, email, password);
             console.log(statusCode);
             if(statusCode == 200){
                 Server_Logic.setSession(request, username, email);
