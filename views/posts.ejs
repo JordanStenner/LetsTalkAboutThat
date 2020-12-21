@@ -13,7 +13,7 @@
 
 <title>LTAT - Online Forum</title>
 
-<link href="/css/homepage.css" rel="stylesheet">
+<link href="/css/posts.css" rel="stylesheet">
 </head>
 <body class="text-center">
   <div class="wrapper">
@@ -46,7 +46,7 @@
 
     <!-- Forum List -->
     <div class="inner-main-body p-sm-3 collapse forum-content show">
-      <button class="create-post">Create Post</button>
+      <button class="create-post" type="button" data-toggle="modal" data-target="#post_modal">Create Post</button>
       <% for (i=0; i<postsArr.length; i++) {  %>
       <div class="card mb-2">
           <div class="card-body p-2 p-sm-3">
@@ -75,6 +75,37 @@
       <p></p>
     </div>
   </footer>
+
+  <!-- Post Creation Modal -->
+<div class="modal fade" id="post_modal" tabindex="-1" role="dialog" aria-labelledby="post-modal-label" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="post-modal-label">
+          Create new post
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-post" method="POST" action="/">
+          <label for="post-title" class="sr-only">Title</label>
+          <input type="text" id="post-title post-form-input" class="form-control" placeholder="Post Title" name="post-title" required autofocus>
+          <div class="form-outline mb-4">
+            <label class="sr-only" for="post-content">Post Content</label>
+            <textarea class="form-control" id="post-content post-form-input" rows="4" placeholder="Post Content" name="post-content" required></textarea>
+          </div>
+          <button class="btn btn-lg btn-dark btn-block" type="submit">Submit Post</button>
+          <p id="error" name="error"><%= error %></p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

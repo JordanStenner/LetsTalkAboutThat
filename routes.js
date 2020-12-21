@@ -37,28 +37,6 @@ async function homepage(request, response){
     }
 }
 
-async function posts(request, response){
-    let user; 
-    let topicName = request.params.topicname;
-    if(request.session.email){
-        user = request.session.username;
-        let postsArr = [];
-
-        await Post.find({topic_title: topicName}, function(err, post){
-            if(err) throw err;
-            for(i = 0; i < post.length; i++){
-                postsArr.push(post[i]);
-                //console.log(topic[i]["topic_title"]);
-            }
-
-        });
-        return response.render("posts", {username: user, postsArr: postsArr});
-    }
-    else{
-        return response.redirect("/");
-    }
-}
-
 async function login(request, response){
     let email = request.body.email.toLowerCase();
     let password = request.body.password;
@@ -140,6 +118,70 @@ async function createAccount(request, response){
         return response.render("createaccount", {error:""});
     }
 }
+
+async function posts(request, response){
+    let user; 
+    let topicName = request.params.topicname;
+    let errorArr;
+    if(request.session.email){
+        user = request.session.username;
+        let postsArr = [];
+
+        await Post.find({topic_title: topicName}, function(err, post){
+            if(err) throw err;
+            for(i = 0; i < post.length; i++){
+                postsArr.push(post[i]);
+                //console.log(topic[i]["topic_title"]);
+            }
+
+        });
+        return response.render("posts", {username: user, postsArr: postsArr, error: errorArr});
+    }
+    else{
+        return response.redirect("/");
+    }
+}
+
+// async function createPost(request, response){
+//     var errorArr = [];
+//     let username = request.body.username.toLowerCase();
+//     let email = request.body.email.toLowerCase();
+//     let password = request.body.password;
+//     let confirmPassword = request.body.confirmPassword;
+
+//     let user = await User_Logic.getUser(username, email);
+
+//     if(!user){
+//         if(password != confirmPassword){
+//             errorArr.push("Both passwords must match");
+//             return response.render("createaccount", {error:errorArr});
+//         }
+//         else {
+//             let statusCode = User_Logic.registerAccount(username, email, password);
+//             console.log(statusCode);
+//             if(statusCode == 200){
+//                 Server_Logic.setSession(request, username, email);
+//                 console.log(request.session.username);
+//                 return response.redirect("/home");
+//             }
+//             else{
+//                 return response.status(500).send();
+//             }
+//         }
+//     }
+//     else{
+//         if(user){
+//             if(user.username == username){
+//                 errorArr.push("An account with that username already exists");
+//             }
+//             if(user.email == email){
+//                 errorArr.push("An account with that email already exists");
+//             }
+//             console.log(errorArr);
+//             return response.render("createaccount", {error: errorArr});
+//         }
+//     }
+// }
 
 module.exports.loadLanding = loadLanding;
 module.exports.createAccount = createAccount;
