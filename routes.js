@@ -1,6 +1,7 @@
 const e = require("express");
 let User = require("./static/schemas/user_schema");
 let Topic = require("./static/schemas/topic_schema");
+let Post = require("./static/schemas/post_schema");
 
 let User_Logic = require("./static/scripts/user_logic");
 let Server_Logic = require("./static/scripts/server_logic");
@@ -30,6 +31,28 @@ async function homepage(request, response){
 
         });
         return response.render("homepage", {username: user, topicArr: topicArr});
+    }
+    else{
+        return response.redirect("/");
+    }
+}
+
+async function posts(request, response){
+    let user; 
+    let topicName = request.params.topicname;
+    if(request.session.email){
+        user = request.session.username;
+        let postsArr = [];
+
+        await Post.find({topic_title: topicName}, function(err, post){
+            if(err) throw err;
+            for(i = 0; i < post.length; i++){
+                postsArr.push(post[i]);
+                //console.log(topic[i]["topic_title"]);
+            }
+
+        });
+        return response.render("posts", {username: user, postsArr: postsArr});
     }
     else{
         return response.redirect("/");
@@ -124,3 +147,4 @@ module.exports.register = register;
 module.exports.login = login;
 module.exports.homepage = homepage;
 module.exports.logout = logout;
+module.exports.posts = posts;

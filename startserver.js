@@ -30,6 +30,7 @@ app.use(session({
 app.get("/", routes.loadLanding);
 app.get("/createaccount", routes.createAccount);
 app.get("/home", routes.homepage);
+app.get("/posts/:topicname", routes.posts);
 
 app.post("/register", routes.register);
 app.post("/login", routes.login);
