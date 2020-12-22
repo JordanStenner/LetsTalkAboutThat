@@ -20,7 +20,7 @@
     <div class="cover-container d-flex  p-3 mx-auto flex-column">
   <header class="masthead">
     <div class="inner">
-      <h3 class="masthead-brand">LTAT</h3>
+      <h3 class="masthead-brand"><a href="/">LTAT</a></h3>
       <nav class="nav nav-masthead justify-content-center">
         <a class="nav-link active" href="/">Home</a>
         <a class="nav-link" href="#">Features</a>
@@ -40,13 +40,12 @@
   </header>
 </div>
   <main role="main" class="inner cover">
-    <h1 class="heading"><%= topic %></h1>
-    <p class="lead">This is where forum subjects will be displayed</p>
-    <p>Welcome <%= username %></p>
+    <h1 class="heading"><%= topic["topic_title"] %></h1>
+    <p class="lead"><%= topic["topic_description"] %></p>
 
     <!-- Forum List -->
     <div class="inner-main-body p-sm-3 collapse forum-content show">
-      <button class="create-post" type="button" data-toggle="modal" data-target="#post_modal">Create Post</button>
+      <button class="btn btn-light" type="button" data-toggle="modal" data-target="#post_modal">Create Post</button>
       <% for (i=0; i<postsArr.length; i++) {  %>
       <div class="card mb-2">
           <div class="card-body p-2 p-sm-3">
@@ -56,7 +55,7 @@
                       <p class="post-description" name="post_description">
                         <%= postsArr[i]["post_content"] %>
                       </p>
-                      <p class="post-author" name="post_author">Posted by <%= postsArr[i]["author"] %></p>
+                      <p class="post-author" name="post_author">Posted by <%= postsArr[i]["author"] %> on <%= postsArr[i]["formatted_date"] %></p>
                       <p class="text-muted"><a href="#">Join Conversation</a></p>
                   </div>
               </div>
@@ -88,7 +87,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form class="form-post" method="POST" action="/createpost/<%= topic %>">
+        <form class="form-post" method="POST" action="/createpost/<%= topic["topic_title"] %>">
           <label for="postTitle" class="sr-only">Title</label>
           <input type="text" id="post-title post-form-input" class="form-control" placeholder="Post Title" name="postTitle" required autofocus>
           <div class="form-outline mb-4">

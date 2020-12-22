@@ -122,19 +122,8 @@ async function posts(request, response){
         let topic = await Post_Logic.getTopic(topicName);
         console.log("After getting topics");
 
-        // let postsArr = [];
-        // //console.log(topic._id);
-        // await Post.find({topic: topic._id}, function(err, post){
-        //     if(err) throw err;
-        //     for(i = 0; i < post.length; i++){
-        //         postsArr.push(post[i]);
-        //         //console.log(post[i]["topic"]);
-        //     }
-
-        // });
-
         let postsArr = await findPosts(topic);
-        return response.render("posts", {username: user, postsArr: postsArr, topic: topicName});
+        return response.render("posts", {username: user, postsArr: postsArr, topic: topic});
     }
     else{
         return response.redirect("/");
@@ -144,18 +133,30 @@ async function posts(request, response){
 async function findPosts(topic){
     let postsArr = [];
     try{
-    let post = await Post.find({topic: topic._id});
+    let post = await Post.find({topic: topic._id}).sort({"date_posted": "desc"});
         for(i = 0; i < post.length; i++){
+            post[i].formatted_date = formatDate(post[i].date_posted);
             postsArr.push(post[i]);
-            //console.log(post[i]["topic"]);
+            console.log(post[i].formatted_date);
         }
     }
     catch (err){
         console.log(err);
     }
 
-    
     return postsArr;
+}
+
+function formatDate(date){
+    date = new Date(date);
+    date2 = date.getDate() + "-" +
+           (date.getMonth() + 1) + "-" +
+          date.getFullYear() + " " + 
+               ('0' + date.getHours()).slice(-2) + ":" + 
+               ('0' + date.getMinutes()).slice(-2) + ":" + 
+               ('0' + date.getSeconds()).slice(-2) + ' ' + 
+               (date.getHours() < 12 ? 'AM' : 'PM');
+    return date2.toString();
 }
 
 async function createPost(request, response){
