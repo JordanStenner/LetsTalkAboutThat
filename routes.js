@@ -21,16 +21,8 @@ async function homepage(request, response){
     let user; 
     if(request.session.email){
         user = request.session.username;
-        let topicArr = [];
+        let topicArr = await Post_Logic.getAllTopics();
 
-        await Topic.find({}, function(err, topic){
-            if(err) throw err;
-            for(i = 0; i < topic.length; i++){
-                topicArr.push(topic[i]);
-                //console.log(topic[i]["topic_title"]);
-            }
-
-        });
         return response.render("homepage", {username: user, topicArr: topicArr});
     }
     else{
@@ -126,23 +118,44 @@ async function posts(request, response){
 
     if(request.session.email){
         user = request.session.username;
+        console.log("Before getting topics");
         let topic = await Post_Logic.getTopic(topicName);
+        console.log("After getting topics");
 
-        let postsArr = [];
-        //console.log(topic._id);
-        await Post.find({topic: topic._id}, function(err, post){
-            if(err) throw err;
-            for(i = 0; i < post.length; i++){
-                postsArr.push(post[i]);
-                //console.log(post[i]["topic"]);
-            }
+        // let postsArr = [];
+        // //console.log(topic._id);
+        // await Post.find({topic: topic._id}, function(err, post){
+        //     if(err) throw err;
+        //     for(i = 0; i < post.length; i++){
+        //         postsArr.push(post[i]);
+        //         //console.log(post[i]["topic"]);
+        //     }
 
-        });
+        // });
+
+        let postsArr = await findPosts(topic);
         return response.render("posts", {username: user, postsArr: postsArr, topic: topicName});
     }
     else{
         return response.redirect("/");
     }
+}
+
+async function findPosts(topic){
+    let postsArr = [];
+    try{
+    let post = await Post.find({topic: topic._id});
+        for(i = 0; i < post.length; i++){
+            postsArr.push(post[i]);
+            //console.log(post[i]["topic"]);
+        }
+    }
+    catch (err){
+        console.log(err);
+    }
+
+    
+    return postsArr;
 }
 
 async function createPost(request, response){

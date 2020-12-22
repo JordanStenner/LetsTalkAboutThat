@@ -33,7 +33,23 @@ async function getPost(postTitle){
 
 async function getTopic(topicTitle){
     let topic = await Topic.findOne({topic_title: topicTitle});
+    console.log("Get Topics has completed");
     return topic;
+}
+
+async function getAllTopics(){
+    let topicsArr = [];
+    try{
+    let topic = await Topic.find({});
+        for(i = 0; i < topic.length; i++){
+            topicsArr.push(topic[i]);
+            //console.log(post[i]["topic"]);
+        }
+    }
+    catch (err){
+        console.log(err);
+    }
+    return topicsArr;
 }
 
 async function removePost(postTitle){
@@ -52,3 +68,4 @@ module.exports.getPost = getPost;
 module.exports.removePost = removePost;
 
 module.exports.getTopic = getTopic;
+module.exports.getAllTopics = getAllTopics;
