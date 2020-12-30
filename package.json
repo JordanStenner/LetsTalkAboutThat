@@ -24,12 +24,16 @@
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "http": "0.0.1-security",
     "jquery-validation": "^1.19.2",
     "mocha": "^8.2.1",
     "mongoose": "^5.11.0",
     "path": "^0.12.7",
     "session": "^0.1.0",
     "sinon": "^9.2.2",
-    "supertest": "^6.0.1"
+    "socket.io": "^3.0.4",
+    "socketio": "^1.0.0",
+    "supertest": "^6.0.1",
+    "ws": "^7.4.1"
   }
 }

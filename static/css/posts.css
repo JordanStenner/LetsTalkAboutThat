@@ -24,13 +24,15 @@ a:hover {
  * Base structure
  */
 
-html,
-body {
+html{
   height: 100%;
-  background-color: #333;
+  
 }
 
+
 body {
+  min-height: 100vh;
+  background-color: #333;
   display: -ms-flexbox;
   display: flex;
   color: #fff;
@@ -40,7 +42,6 @@ body {
 
 .wrapper {
   position: absolute;
-  height: 100%;
   width: 100%;
 }
 
@@ -129,6 +130,21 @@ body {
 
 .nav-item{
   margin-left: 1rem;
+}
+
+#create-post {
+  margin-bottom: 2%;
+}
+
+.post-author {
+  font-size: small;
+  float: left;
+  margin-bottom: 0;
+}
+
+.join-conversation {
+  margin-bottom: 0;
+  color: #333;
 }
 
 /*

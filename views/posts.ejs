@@ -17,35 +17,35 @@
 </head>
 <body class="text-center">
   <div class="wrapper">
-    <div class="cover-container d-flex  p-3 mx-auto flex-column">
-  <header class="masthead">
-    <div class="inner">
-      <h3 class="masthead-brand"><a href="/">LTAT</a></h3>
-      <nav class="nav nav-masthead justify-content-center">
-        <a class="nav-link active" href="/">Home</a>
-        <a class="nav-link" href="#">Features</a>
-        <a class="nav-link" href="#">Contact</a>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <%= username %>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">My Account</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item logout" href="/logout">Log Out</a>
-            </div>
-        </li>
-      </nav>
-    </div>
-  </header>
-</div>
+  <div class="cover-container d-flex  p-3 mx-auto flex-column">
+    <header class="masthead">
+      <div class="inner">
+        <h3 class="masthead-brand"><a href="/">LTAT</a></h3>
+        <nav class="nav nav-masthead justify-content-center">
+          <a class="nav-link active" href="/">Home</a>
+          <a class="nav-link" href="#">Features</a>
+          <a class="nav-link" href="#">Contact</a>
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <%= username %>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="#">My Account</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item logout" href="/logout">Log Out</a>
+              </div>
+          </li>
+        </nav>
+      </div>
+    </header>
+  </div>
   <main role="main" class="inner cover">
     <h1 class="heading"><%= topic["topic_title"] %></h1>
     <p class="lead"><%= topic["topic_description"] %></p>
 
     <!-- Forum List -->
     <div class="inner-main-body p-sm-3 collapse forum-content show">
-      <button class="btn btn-light" type="button" data-toggle="modal" data-target="#post_modal">Create Post</button>
+      <button class="btn btn-light" id="create-post" type="button" data-toggle="modal" data-target="#post_modal">Create Post</button>
       <% for (i=0; i<postsArr.length; i++) {  %>
       <div class="card mb-2">
           <div class="card-body p-2 p-sm-3">
@@ -55,8 +55,8 @@
                       <p class="post-description" name="post_description">
                         <%= postsArr[i]["post_content"] %>
                       </p>
+                      <p class="join-conversation"><a href="#">Join Conversation</a></p>
                       <p class="post-author" name="post_author">Posted by <%= postsArr[i]["author"] %> on <%= postsArr[i]["formatted_date"] %></p>
-                      <p class="text-muted"><a href="#">Join Conversation</a></p>
                   </div>
               </div>
           </div>
@@ -67,12 +67,6 @@
   </main>
 </div>
 
-
-    <footer class="mastfoot mt-auto">
-    <div class="inner">
-      <p></p>
-    </div>
-  </footer>
 
   <!-- Post Creation Modal -->
 <div class="modal fade" id="post_modal" tabindex="-1" role="dialog" aria-labelledby="post-modal-label" aria-hidden="true">

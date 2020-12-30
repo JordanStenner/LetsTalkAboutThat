@@ -1,4 +1,3 @@
-const e = require("express");
 let User = require("./static/schemas/user_schema");
 let Topic = require("./static/schemas/topic_schema");
 let Post = require("./static/schemas/post_schema");
@@ -6,6 +5,8 @@ let Post = require("./static/schemas/post_schema");
 let User_Logic = require("./static/scripts/user_logic");
 let Post_Logic = require("./static/scripts/post_logic")
 let Server_Logic = require("./static/scripts/server_logic");
+
+
 
 async function loadLanding(request, response){
     if(request.session.email){

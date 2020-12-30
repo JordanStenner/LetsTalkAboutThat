@@ -15,6 +15,7 @@ console.log(mongoose.connection.readyState);
 suite("Tests for User Logic", function(){
     var testEmail ="Testing@Unit.Test";
     var testUsername = "TestUser";
+    
     setup(async function(){
         try {
             const newuser = new User({

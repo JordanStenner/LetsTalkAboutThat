@@ -1,16 +1,20 @@
 let routes = require("./routes");
 
-let express = require("express");
+var express = require("express");
 var session = require("express-session");
-let mongoose = require("mongoose");
-let path = require("path");
+var mongoose = require("mongoose");
+var socketio = require("socket.io");
+var path = require("path");
+var http = require("http");
 
 //let url = "mongodb://localhost:27017/LetsTalkAboutThat";
 let url = "mongodb+srv://JordanStenner:LTATDB@letstalkaboutthat.imvzx.mongodb.net/LetsTalkAboutThat?retryWrites=true&w=majority"
 mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true});
 
-let app = express();
 const port = 9000;
+let app = express();
+let server = http.createServer(app);
+
 
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "static")));
@@ -39,8 +43,16 @@ app.get("/logout", routes.logout);
 
 app.post("/createpost/:topicname", routes.createPost);
 
-app.listen(process.env.PORT || port, function(){
+
+server.listen(port, function(){
     console.log("Listening on " + port);
 });
+
+let io = socketio(server);
+
+io.on("connection", function(socket){
+    socket.emit("test", "User connected");
+});
+
 
 module.exports.app = app;
