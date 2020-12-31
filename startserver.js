@@ -1,3 +1,4 @@
+let Chatroom_Logic = require("./static/scripts/chatroom_logic");
 let routes = require("./routes");
 
 var express = require("express");
@@ -51,7 +52,19 @@ server.listen(port, function(){
 let io = socketio(server);
 
 io.on("connection", function(socket){
+    const bot = "LTAT BOT";
     socket.emit("test", "User connected");
+
+    socket.on("joinedRoom", function({username, postID}){
+        let user = Chatroom_Logic.joinedUser(socket.id, username, postID);
+        console.log(user.username + " Has joined the chat");
+        console.log(user.postID);
+        console.log(socket.id);
+
+        socket.join(user.postID);
+
+        socket.broadcast.to(user.postID).emit("sendMessage", Chatroom_Logic.formatMessageContent(bot, username + " has joined the discussion"));
+    });
 });
 
 

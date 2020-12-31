@@ -18,18 +18,6 @@ async function loadLanding(request, response){
 
 }
 
-// async function getChatroom(request, response){
-//     if(request.session.email){
-//         let postTitle = request.params.posttitle;
-//         let user = request.session.username;
-
-//         let post = await Post_Logic.getPost(postTitle);
-//         let postID = post._id;
-
-//         return response.redirect("/chatroom/" + user +"/"+ postID);
-//     }
-// }
-
 async function chatroom(request, response){
     if(request.session.email){
         let postID = request.params.postID;
