@@ -40,7 +40,7 @@ app.get("/posts/:topicname", routes.posts);
 app.post("/register", routes.register);
 app.post("/login", routes.login);
 app.get("/logout", routes.logout);
-
+app.get("/chatroom/:postID/:username", routes.chatroom);
 app.post("/createpost/:topicname", routes.createPost);
 
 

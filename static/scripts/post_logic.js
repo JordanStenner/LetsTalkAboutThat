@@ -31,6 +31,11 @@ async function getPost(postTitle){
     return post;
 }
 
+async function getPostWithID(postID){
+    let post = await Post.findOne({_id: postID});
+    return post;
+}
+
 async function getTopic(topicTitle){
     let topic = await Topic.findOne({topic_title: topicTitle});
     console.log("Get Topics has completed");
@@ -66,6 +71,7 @@ async function removePost(postTitle){
 module.exports.createPost = createPost;
 module.exports.getPost = getPost;
 module.exports.removePost = removePost;
+module.exports.getPostWithID = getPostWithID;
 
 module.exports.getTopic = getTopic;
 module.exports.getAllTopics = getAllTopics;

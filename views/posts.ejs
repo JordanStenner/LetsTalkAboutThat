@@ -55,7 +55,7 @@
                       <p class="post-description" name="post_description">
                         <%= postsArr[i]["post_content"] %>
                       </p>
-                      <p class="join-conversation"><a href="#">Join Conversation</a></p>
+                      <p class="join-conversation"><a href="/chatroom/<%= postsArr[i]["_id"] %>/<%= username %>">Join Conversation</a></p>
                       <p class="post-author" name="post_author">Posted by <%= postsArr[i]["author"] %> on <%= postsArr[i]["formatted_date"] %></p>
                   </div>
               </div>

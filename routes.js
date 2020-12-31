@@ -18,6 +18,27 @@ async function loadLanding(request, response){
 
 }
 
+// async function getChatroom(request, response){
+//     if(request.session.email){
+//         let postTitle = request.params.posttitle;
+//         let user = request.session.username;
+
+//         let post = await Post_Logic.getPost(postTitle);
+//         let postID = post._id;
+
+//         return response.redirect("/chatroom/" + user +"/"+ postID);
+//     }
+// }
+
+async function chatroom(request, response){
+    if(request.session.email){
+        let postID = request.params.postID;
+        let post = await Post_Logic.getPostWithID(postID);
+
+        return response.render("chatroom", {post: post});
+    }
+}
+
 async function homepage(request, response){
     let user; 
     if(request.session.email){
@@ -138,7 +159,7 @@ async function findPosts(topic){
         for(i = 0; i < post.length; i++){
             post[i].formatted_date = formatDate(post[i].date_posted);
             postsArr.push(post[i]);
-            console.log(post[i].formatted_date);
+            console.log(post[i]._id);
         }
     }
     catch (err){
@@ -188,3 +209,4 @@ module.exports.homepage = homepage;
 module.exports.logout = logout;
 module.exports.posts = posts;
 module.exports.createPost = createPost;
+module.exports.chatroom = chatroom;
