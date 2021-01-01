@@ -7,7 +7,7 @@ const spliturl = url.split("/");
 const username = spliturl[5];
 const postID = spliturl[4];
 
-let socket = io("http://localhost:9000");
+let socket = io();
 
 //Socket handler to send the actual message
 socket.on("sendMessage", function(content){
