@@ -7,6 +7,10 @@ function joinedUser(socketID, username, postID){
     return user;
 }
 
+function getUserFromSocket(socketID){
+    return users.find(user => user.socketID == socketID);
+}
+
 function formatMessageContent(username, content){
     time = getTime();
     return {
@@ -27,3 +31,4 @@ function getTime(){
 module.exports.joinedUser = joinedUser;
 module.exports.getTime = getTime;
 module.exports.formatMessageContent = formatMessageContent;
+module.exports.getUserFromSocket = getUserFromSocket;

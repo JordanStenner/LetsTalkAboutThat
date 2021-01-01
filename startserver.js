@@ -45,7 +45,7 @@ app.get("/chatroom/:postID/:username", routes.chatroom);
 app.post("/createpost/:topicname", routes.createPost);
 
 
-server.listen(port, function(){
+server.listen(process.env.PORT || port, function(){
     console.log("Listening on " + port);
 });
 
@@ -58,10 +58,18 @@ io.on("connection", function(socket){
     socket.on("joinedRoom", function({username, postID}){
         let user = Chatroom_Logic.joinedUser(socket.id, username, postID);
         console.log(user.username + " Has joined the chat");
-        
+
         socket.join(user.postID);
 
         socket.broadcast.to(user.postID).emit("sendMessage", Chatroom_Logic.formatMessageContent(bot, username + " has joined the discussion"));
+    });
+
+    socket.on("userMessage", function(message){
+        const user = Chatroom_Logic.getUserFromSocket(socket.id);
+
+        if(user){
+            io.to(user.postID).emit("sendMessage", Chatroom_Logic.formatMessageContent(user.username, message));
+        }
     });
 });
 
