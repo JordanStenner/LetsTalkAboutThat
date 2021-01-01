@@ -21,9 +21,10 @@ async function loadLanding(request, response){
 async function chatroom(request, response){
     if(request.session.email){
         let postID = request.params.postID;
+        let username = request.params.username;
         let post = await Post_Logic.getPostWithID(postID);
 
-        return response.render("chatroom", {post: post});
+        return response.render("chatroom", {post: post, username: username});
     }
 }
 

@@ -98,7 +98,7 @@ body {
 .chat-container {
   margin-top: 5%;
   min-height: 80%;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .chat-form-container {
@@ -109,30 +109,36 @@ body {
   width: 60%;
 }
 
+.chat-content .content .meta #message-time{
+  font-size: x-small;
+  color: powderblue;
+}
+
 .chat-content {
   padding: 30px;
   min-height: 600px;
+  max-height: 600px;
   overflow-y: scroll;
   background-color: grey;
 }
 
-.chat-content .message {
-	padding: 10px;
-	margin-bottom: 15px;
-	background-color: var(--light-color);
+.chat-content .content {
+	padding: 2px;
+	margin-bottom: 5px;
+	background-color: pink;
 	border-radius: 5px;
 	overflow-wrap: break-word;
 }
 
-.chat-content .message .meta {
-	font-size: 15px;
+.chat-content .content .meta {
+	font-size: small;
 	font-weight: bold;
-	color: var(--dark-color-b);
 	opacity: 0.7;
-	margin-bottom: 7px;
+  margin-bottom: 0px;
+  margin-right: 70%;
 }
 
-.chat-content .message .meta span {
+.chat-content .content .meta span {
 	color: #777;
 }
 
