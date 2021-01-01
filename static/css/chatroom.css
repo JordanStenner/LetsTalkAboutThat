@@ -125,9 +125,16 @@ body {
 .chat-content .content {
 	padding: 2px;
 	margin-bottom: 5px;
-	background-color: pink;
 	border-radius: 5px;
 	overflow-wrap: break-word;
+}
+
+.chat-content .user {
+  background-color:lightslategray;
+}
+
+.chat-content .bot {
+background-color: rgba(48, 149, 81, 0.548);
 }
 
 .chat-content .content .meta {

@@ -17,13 +17,19 @@ socket.on("test", function(msg){
 socket.on("sendMessage", function(content){
 
     createMessageHTML(content);
-    document.querySelector(".chat-content").scrollTop = document.querySelector(".chat-content").scrollHeight;
+    //document.querySelector(".chat-content").scrollTop = document.querySelector(".chat-content").scrollHeight;
 });
 
 function createMessageHTML(content){
     //Create main div that will hold the sent message
     const mainDiv = document.createElement("div");
     mainDiv.classList.add("content");
+    if(content.username == "LTAT BOT"){
+        mainDiv.classList.add("bot")
+    }
+    else{
+        mainDiv.classList.add("user")
+    }
     
     //Create a paragraph element to hold the username and time of message
     const userTags =  document.createElement("p");
