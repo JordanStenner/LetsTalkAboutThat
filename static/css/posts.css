@@ -147,6 +147,20 @@ body {
   color: #333;
 }
 
+#pagination-container {
+  display: inline-block;
+}
+
+.pagination-next {
+  margin-left: 5px;
+  width: 125px;
+}
+
+.pagination-prev {
+  margin-right: 5px;
+  width: 125px;
+}
+
 /*
 * Create Post Modal
 */

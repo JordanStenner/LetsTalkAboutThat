@@ -46,17 +46,17 @@
     <!-- Forum List -->
     <div class="inner-main-body p-sm-3 collapse forum-content show">
       <button class="btn btn-light" id="create-post" type="button" data-toggle="modal" data-target="#post_modal">Create Post</button>
-      <% for (i=0; i<postsArr.length; i++) {  %>
+      <% for (i=0; i<paginatedContent.postsArr.length; i++) {  %>
       <div class="card mb-2">
           <div class="card-body p-2 p-sm-3">
               <div class="media forum-item">
                   <div class="media-body">
-                      <h6 class="post-title" name="post_title"><%= postsArr[i]["post_title"] %></h6>
+                      <h6 class="post-title" name="post_title"><%= paginatedContent.postsArr[i]["post_title"] %></h6>
                       <p class="post-description" name="post_description">
-                        <%= postsArr[i]["post_content"] %>
+                        <%= paginatedContent.postsArr[i]["post_content"] %>
                       </p>
-                      <p class="join-conversation"><a href="/chatroom/<%= postsArr[i]["_id"] %>/<%= username %>">Join Conversation</a></p>
-                      <p class="post-author" name="post_author">Posted by <%= postsArr[i]["author"] %> on <%= postsArr[i]["formatted_date"] %></p>
+                      <p class="join-conversation"><a href="/chatroom/<%= paginatedContent.postsArr[i]["_id"] %>/<%= username %>">Join Conversation</a></p>
+                      <p class="post-author" name="post_author">Posted by <%= paginatedContent.postsArr[i]["author"] %> on <%= paginatedContent.postsArr[i]["formatted_date"] %></p>
                   </div>
               </div>
           </div>
@@ -65,6 +65,16 @@
   </div>
   <!-- /Forum List -->
   </main>
+  <div id="pagination-container">
+    <p><strong><%= paginatedContent.page %></strong></p>
+    <% if(paginatedContent.pageStart > 0) {%>
+      <a class="btn btn-secondary pagination-prev" href="/posts/<%= topic["topic_title"] %>/<%= paginatedContent.previousPage["page"] %>">Previous Page</a>
+    <% } %>
+    <% if(paginatedContent.pageEnd < paginatedContent.postsFullLength) {%>
+      <a class="btn btn-secondary pagination-next" href="/posts/<%= topic["topic_title"] %>/<%= paginatedContent.nextPage["page"] %>">Next Page</a>
+    <% } %>
+
+</div>
 </div>
 
 

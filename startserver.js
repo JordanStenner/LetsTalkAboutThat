@@ -12,7 +12,7 @@ var http = require("http");
 let url = "mongodb+srv://JordanStenner:LTATDB@letstalkaboutthat.imvzx.mongodb.net/LetsTalkAboutThat?retryWrites=true&w=majority"
 mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true});
 
-const port = 9000;
+const port = process.env.PORT || 9000;
 let app = express();
 let server = http.createServer(app);
 
@@ -36,7 +36,7 @@ app.use(session({
 app.get("/", routes.loadLanding);
 app.get("/createaccount", routes.createAccount);
 app.get("/home", routes.homepage);
-app.get("/posts/:topicname", routes.posts);
+app.get("/posts/:topicname/:page", routes.posts);
 
 app.post("/register", routes.register);
 app.post("/login", routes.login);
@@ -45,7 +45,7 @@ app.get("/chatroom/:postID/:username", routes.chatroom);
 app.post("/createpost/:topicname", routes.createPost);
 
 
-server.listen(process.env.PORT || port, function(){
+server.listen(port, function(){
     console.log("Listening on " + port);
 });
 
@@ -69,6 +69,14 @@ io.on("connection", function(socket){
 
         if(user){
             io.to(user.postID).emit("sendMessage", Chatroom_Logic.formatMessageContent(user.username, message));
+        }
+    });
+
+    socket.on("disconnect", function(){
+        let user = Chatroom_Logic.userDisconnect(socket.id);
+
+        if(user){
+            io.to(user.postID).emit("sendMessage", Chatroom_Logic.formatMessageContent(bot, user.username + " has left the discussion"));
         }
     });
 });

@@ -7,6 +7,14 @@ function joinedUser(socketID, username, postID){
     return user;
 }
 
+function userDisconnect(socketID){
+    let userIndex = users.findIndex(user => user.socketID == socketID);
+
+    if(userIndex != -1){
+        return users.splice(userIndex, 1)[0];
+    }
+}
+
 function getUserFromSocket(socketID){
     return users.find(user => user.socketID == socketID);
 }
@@ -32,3 +40,4 @@ module.exports.joinedUser = joinedUser;
 module.exports.getTime = getTime;
 module.exports.formatMessageContent = formatMessageContent;
 module.exports.getUserFromSocket = getUserFromSocket;
+module.exports.userDisconnect = userDisconnect;

@@ -34,7 +34,6 @@ form.addEventListener("submit", event => {
     event.target.elements.message.focus();
 });
 
-
 /* Function for creating the message HTML code */
 function createMessageHTML(content){
     //Create main div that will hold the sent message

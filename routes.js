@@ -5,6 +5,7 @@ let Post = require("./static/schemas/post_schema");
 let User_Logic = require("./static/scripts/user_logic");
 let Post_Logic = require("./static/scripts/post_logic")
 let Server_Logic = require("./static/scripts/server_logic");
+const { userDisconnect } = require("./static/scripts/chatroom_logic");
 
 
 
@@ -124,17 +125,45 @@ async function createAccount(request, response){
 }
 
 async function posts(request, response){
+    const page = Number(request.params.page);
+    const limit = Number(4);
+    const pageStart = (page - 1) * limit;
+    const pageEnd = page * limit;
+
+    const paginatedContent = {};
+
     let user; 
     let topicName = request.params.topicname;
 
     if(request.session.email){
         user = request.session.username;
-        console.log("Before getting topics");
-        let topic = await Post_Logic.getTopic(topicName);
-        console.log("After getting topics");
 
+        let topic = await Post_Logic.getTopic(topicName);
         let postsArr = await findPosts(topic);
-        return response.render("posts", {username: user, postsArr: postsArr, topic: topic});
+
+        paginatedContent.page = page;
+        paginatedContent.pageStart = pageStart;
+        paginatedContent.pageEnd = pageEnd;
+
+        paginatedContent.postsFullLength = postsArr.length;
+
+        if(pageEnd < postsArr.length){
+            paginatedContent.nextPage = {
+            page: page + 1,
+            limit: limit
+            }  
+        }
+
+        if(pageStart > 0){
+            paginatedContent.previousPage = {
+                page: page - 1,
+                limit: limit
+            }
+        }
+
+
+        paginatedContent.postsArr = postsArr.slice(pageStart, pageEnd);
+        return response.render("posts", {username: user, paginatedContent: paginatedContent, topic: topic});
     }
     else{
         return response.redirect("/");
@@ -171,7 +200,6 @@ function formatDate(date){
 }
 
 async function createPost(request, response){
-    var errorArr = [];
     let email = request.session.email;
     let topicName = request.params.topicname;
     let postTitle = request.body.postTitle;
@@ -183,7 +211,7 @@ async function createPost(request, response){
     let statusCode = await Post_Logic.createPost(topic._id, user.username, postTitle, postContent);
     console.log(statusCode);
     if(statusCode == 200){
-        return response.redirect("/posts/" + topicName);
+        return response.redirect("/posts/" + topicName + "/1");
     }
     else{
         return response.status(500).send();
