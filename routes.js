@@ -189,9 +189,14 @@ async function findPosts(topic){
 
 function formatDate(date){
     date = new Date(date);
-    date2 = date.getDate() + "-" +
-           (date.getMonth() + 1) + "-" +
-          date.getFullYear() + " " + 
+    let day = date.getDate();
+    let month = (date.getMonth() + 1);
+    day = day > 9 ? day : "0" + day;
+    month = month > 9 ? month : "0" + month;
+
+    date2 = day + "-" +
+            month + "-" +
+            date.getFullYear() + " " + 
                ('0' + date.getHours()).slice(-2) + ":" + 
                ('0' + date.getMinutes()).slice(-2) + ":" + 
                ('0' + date.getSeconds()).slice(-2) + ' ' + 
