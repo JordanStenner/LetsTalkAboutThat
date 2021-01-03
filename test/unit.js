@@ -8,14 +8,23 @@ let Server_Logic = require("../static/scripts/server_logic");
 let User = require("../static/schemas/user_schema");
 
 let url = "mongodb+srv://JordanStenner:LTATDB@letstalkaboutthat.imvzx.mongodb.net/LetsTalkAboutThatTesting?retryWrites=true&w=majority";
-mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true});
-console.log("DB ReadyState: " + mongoose.connection.readyState);
+
 
 
 //Test suite for User_Logic functions
 suite("Tests for User Logic", function(){
     var testEmail ="Testing@Unit.Test";
     var testUsername = "TestUser";
+
+    suiteSetup(function(){
+        mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true});
+        console.log("DB ReadyState: " + mongoose.connection.readyState);
+    });
+
+    suiteTeardown(function(done){
+        mongoose.connection.close();
+        done();
+    });
     
     setup(async function(){
         this.timeout(10000);
@@ -88,45 +97,54 @@ suite("Tests for User Logic", function(){
      });
 });
 
-suite("Test routes functions", function(){
-    var testEmail ="Testing@Unit.Test";
-    var testUsername = "TestUser";
+// suite("Test routes functions", function(){
+//     var testEmail ="Testing@Unit.Test";
+//     var testUsername = "TestUser";
 
-    setup(async function(){
-        try {
-            const newuser = new User({
-                username: testUsername, 
-                email: testEmail,
-                password: "testPassword"
-            })
-            let saveUser = await newuser.save();
-            //console.log(saveUser);
-        }
-        catch (err){
-            console.log("err" + err);
-        }
-    });
+//     suiteSetup(function(){
+//         mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true});
+//         console.log("DB ReadyState: " + mongoose.connection.readyState);
+//     });
 
-    teardown(async function(){
-        let testUser = await User.findOne({email: testEmail});
-        if(!testUser){
-            console.log("User already deleted by test")
-        }
-        else{
-            await User.deleteOne({email: testEmail}, function(err){
-                if(err) console.log(err);
-                console.log("Test user deleted");
-            });
-        }
+//     suiteTeardown(function(){
+//         mongoose.connection.close();
+//     });
 
-    });
+//     setup(async function(){
+//         try {
+//             const newuser = new User({
+//                 username: testUsername, 
+//                 email: testEmail,
+//                 password: "testPassword"
+//             })
+//             let saveUser = await newuser.save();
+//             //console.log(saveUser);
+//         }
+//         catch (err){
+//             console.log("err" + err);
+//         }
+//     });
 
-    // test("GET loadLanding", function(){
-    //     let request = {};
-    //     let response = {};
-    //     response.send = sinon.spy();
+//     teardown(async function(){
+//         let testUser = await User.findOne({email: testEmail});
+//         if(!testUser){
+//             console.log("User already deleted by test")
+//         }
+//         else{
+//             await User.deleteOne({email: testEmail}, function(err){
+//                 if(err) console.log(err);
+//                 console.log("Test user deleted");
+//             });
+//         }
 
-    //     routes.loadLanding(request, response);
-    //     chai.assert.isTrue(response.send.loadLanding);
-    // });
-});
+//     });
+
+//     // test("GET loadLanding", function(){
+//     //     let request = {};
+//     //     let response = {};
+//     //     response.send = sinon.spy();
+
+//     //     routes.loadLanding(request, response);
+//     //     chai.assert.isTrue(response.send.loadLanding);
+//     // });
+// });
