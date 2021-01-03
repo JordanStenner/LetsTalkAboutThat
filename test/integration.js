@@ -9,20 +9,22 @@ chai.use(chaiHttp);
 
 suite("Test routes", function(){
 
-    test("Test landing page", function(){
+    test("Test landing page", function(done){
         let app = server.app;
         chai.request(app).get("/")
             .end(function(error, response){
                 chai.assert.equal(response.status, 200, "Wrong status code");
             });
+        done();
     });
 
-    test("Test logout page", function(){
+    test("Test logout page", function(done){
         let app = server.app;
         chai.request(app).get("/logout")
             .end(function(error, response){
                 chai.assert.equal(response.status, 200, "Wrong status code");
             });
+        done();
     });
 
     // test("Test homepage when not logged in", function(done){

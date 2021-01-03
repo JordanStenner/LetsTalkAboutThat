@@ -7,9 +7,10 @@ let User_Logic = require("../static/scripts/user_logic");
 let Server_Logic = require("../static/scripts/server_logic");
 let User = require("../static/schemas/user_schema");
 
-let url = "mongodb://localhost:27017/LetsTalkAboutThatTesting";
+let url = "mongodb+srv://JordanStenner:LTATDB@letstalkaboutthat.imvzx.mongodb.net/LetsTalkAboutThatTesting?retryWrites=true&w=majority";
 mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true});
-console.log(mongoose.connection.readyState);
+console.log("DB ReadyState: " + mongoose.connection.readyState);
+
 
 //Test suite for User_Logic functions
 suite("Tests for User Logic", function(){
@@ -17,6 +18,7 @@ suite("Tests for User Logic", function(){
     var testUsername = "TestUser";
     
     setup(async function(){
+        this.timeout(10000);
         try {
             const newuser = new User({
                 username: testUsername, 
@@ -54,13 +56,11 @@ suite("Tests for User Logic", function(){
         chai.assert.equal(statusCode, 200, "Status code should be 200 after creating a user");
         chai.assert.equal(newuser.email, testRegisterEmail, "User email should match - Successfully saved to database");
 
-        try{
-            await User.deleteOne({email: testRegisterEmail});
-        }
-        catch (err){
-            console.log("Error" + err);
-        }
 
+        User.deleteOne({email: testRegisterEmail}, function(error, result){
+            if(error)
+                console.log("Error occured - User not deleted");
+        });
         });
 
     test("Test the getUser function", async function(){
@@ -86,12 +86,12 @@ suite("Tests for User Logic", function(){
 
         chai.assert.equal(removed, true, "User has not been removed from the database");
      });
-
 });
 
 suite("Test routes functions", function(){
     var testEmail ="Testing@Unit.Test";
     var testUsername = "TestUser";
+
     setup(async function(){
         try {
             const newuser = new User({
