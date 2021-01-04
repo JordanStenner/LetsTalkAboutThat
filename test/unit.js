@@ -5,6 +5,7 @@ let sinon = require('sinon');
 const routes = require("../routes");
 const User_Logic = require("../static/scripts/user_logic");
 const Post_Logic = require("../static/scripts/post_logic");
+const Chatroom_Logic = require("../static/scripts/chatroom_logic");
 const Server_Logic = require("../static/scripts/server_logic");
 
 const User = require("../static/schemas/user_schema");
@@ -200,7 +201,37 @@ suite("Tests for Post Logic", function(){
 
         chai.assert.equal(topic.topic_title, topicArr[1].topic_title, "Topic titles should be equal");
         chai.assert.equal(topicArr.length, 2, "Number of topics in the database should equal 2");
+    });
+});
 
+suite("Test chatroom logic", function(){
+    let clock;
+    suiteSetup(function(){
+        let date = new Date(2020, 11, 28, 12, 30, 0);
+        clock = sinon.useFakeTimers(date);
+        
+        console.log("Sinon date set")
+    });
+
+    suiteTeardown(function(done){
+        clock.restore();
+        done();
+    });
+
+    test("Test formatMessageContent function", function(){
+        let testUser = "TestUser";
+        let testMessage = "Message";
+        let content = Chatroom_Logic.formatMessageContent(testUser, testMessage);
+
+        chai.assert.equal(content.username, testUser, "Username should be equal");
+        chai.assert.equal(content.content, testMessage, "Message content should be equal");
+        chai.assert.equal(content.time, "12:30:PM", "Message content time should equal 12:30:PM");
+    });
+
+    test("Test getTime function", function(){
+        let time = Chatroom_Logic.getTime();
+
+        chai.assert.equal(time, "12:30:PM", "Message content time should equal 12:30:PM");
     });
 });
 
