@@ -14,7 +14,7 @@ async function createPost(topic, user, title, content){
             post_content: content
         })
         let savePost = await newpost.save();
-        console.log(savePost);
+        //console.log(savePost);
         console.log("Post created for: " + savePost.author);
     }
     catch (err){
@@ -38,7 +38,6 @@ async function getPostWithID(postID){
 
 async function getTopic(topicTitle){
     let topic = await Topic.findOne({topic_title: topicTitle});
-    console.log("Get Topics has completed");
     return topic;
 }
 
