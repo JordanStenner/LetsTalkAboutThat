@@ -1,3 +1,4 @@
+//const env = process.env.NODE_ENV || "development";
 let Chatroom_Logic = require("./static/scripts/chatroom_logic");
 let routes = require("./routes");
 
@@ -9,6 +10,12 @@ var path = require("path");
 var http = require("http");
 
 //let url = "mongodb://localhost:27017/LetsTalkAboutThat";
+// if(env == "test"){
+//     url = "mongodb+srv://JordanStenner:LTATDB@letstalkaboutthat.imvzx.mongodb.net/LetsTalkAboutThatTesting?retryWrites=true&w=majority"
+// }
+// else {
+//     url = "mongodb+srv://JordanStenner:LTATDB@letstalkaboutthat.imvzx.mongodb.net/LetsTalkAboutThat?retryWrites=true&w=majority"
+// }
 let url = "mongodb+srv://JordanStenner:LTATDB@letstalkaboutthat.imvzx.mongodb.net/LetsTalkAboutThat?retryWrites=true&w=majority"
 mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true});
 
@@ -83,3 +90,4 @@ io.on("connection", function(socket){
 
 
 module.exports.app = app;
+module.exports.server = server;
