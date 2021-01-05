@@ -1,11 +1,11 @@
 let chai = require("chai");
 let chaiHttp = require("chai-http");
+let cheerio = require("cheerio");
 //var request = require("supertest");
 let server = require("../startserver");
 const User = require("../static/schemas/user_schema");
 const expect = chai.expect;
-const should = chai.should();
-let cheerio = require("cheerio");
+
 
 chai.use(chaiHttp);
 
@@ -25,14 +25,17 @@ suite("Test routes", function(){
         }
     });
 
-    // test("Test GET landing route", function(done){
-    //     let app = server.app;
-    //     chai.request(app).get("/")
-    //         .end(function(error, response){
-    //             chai.assert.equal(response.status, 200, "Wrong status code");
-    //         });
-    //     done();
-    // });
+    test("Test GET landing route", async function(){
+        let app = server.app;
+        let response = await chai.request(app).get("/");
+
+        let $ = cheerio.load(response.text);
+        let err = $('#error').html();
+
+        chai.assert.equal(response.status, 200, "Wrong status code");
+        chai.assert.equal(err, "", "Error should be empty");
+
+    });
 
     // test("Test GET logout route", function(done){
     //     let app = server.app;
@@ -42,6 +45,18 @@ suite("Test routes", function(){
     //         });
     //     done();
     // });
+
+    test("Test GET logout route", async function(){
+        let app = server.app;
+        let response = await chai.request(app).get("/logout");
+
+        let $ = cheerio.load(response.text);
+        let err = $('#error').html();
+
+        chai.assert.equal(response.status, 200, "Wrong status code");
+        chai.assert.equal(err, "", "Error should be empty");
+
+    });
 
     // test("Test GET home route", function(done){
     //     let app = server.app;
@@ -103,19 +118,18 @@ suite("Test routes", function(){
         chai.assert.equal(err, "User does not exist", "Wrong error output");
     });
 
-    // test("Test login with valid credentials", function(){
-    //     let app = server.app;
-    //     let agent = chai.request.agent(app);
+    test("Test POST login with valid credentials", async function(){
+        let app = server.app;
+        let response = await chai.request(app).post('/login')
+        .type("form")
+        .send({
+            email: 'testingemail@test.test', 
+            password: 'password'
+        });
 
-    //     agent
-    //         .post('/login')
-    //         .send({email: testEmail, password: testPassword})
-    //         .then(function (response){
-    //             expect(response).to.have.cookie('user_id');
-    //             expect(response).to.redirectTo(/\/home/);
-    //         });
-    //         agent.close();
-    // });
+        chai.assert.equal(response.status, 200, "Wrong status code");
+        expect(response).to.redirectTo(/\/home/);
+    });
 
     // test("Test GET chatroom route", function(done){
     //     let app = server.app;
@@ -135,49 +149,4 @@ suite("Test routes", function(){
     //     done();
     // });
 
-
-
-
-
-//Supertest tests
-
-    // test("Test homepage when not logged in", function(done){
-    //     let app = server.app;
-    //     chai.request(app).get("/home")
-    //         .then(function(error, response){
-    //             expect(response).to.redirectTo(/\//);
-    //             expect(response).to.have.status(302);
-    //             chai.request(app).get("/")
-    //                 expect(response).to.have.status(200);
-    //         })
-    //         .catch(function (err){
-    //             throw err;
-    //         });
-    //         done();
-    // });
-
-    // test("Test homepage when logged in", function(done){
-    //     let app = server.app;
-    //     let agent = chai.request.agent(app);
-
-    //     agent
-    //         .post('/login')
-    //         .send({email: 'test@test.com', password: 't'})
-    //         .then(function (response){
-    //             expect(response).to.have.cookie('user_id');
-    //             expect(response).to.redirectTo(/\/home5/)
-    //             agent.get('/home')
-    //                 .then(function(response){
-    //                     expect(response).to.have.status(2);
-    //                 })
-    //                 .catch(function (error){
-    //                     throw error;
-    //                 });
-    //         })
-    //         .catch(function (error){
-    //             throw error;
-    //         });
-    //     agent.close();
-    //     done();
-    // });
 });

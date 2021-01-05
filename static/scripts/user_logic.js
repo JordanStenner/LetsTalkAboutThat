@@ -12,7 +12,7 @@ async function registerAccount(username, email, password){
             password: password
         })
         let saveUser = await newuser.save();
-        console.log(saveUser);
+        //console.log(saveUser);
         console.log("Account created for: " + newuser.email);
     }
     catch (err){

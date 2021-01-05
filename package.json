@@ -4,7 +4,7 @@
   "description": "Forum website with livechat",
   "main": "startserver.js",
   "scripts": {
-    "test": "mocha -ui tdd test/ --exit",
+    "test": "export NODE_ENV=test && mocha -ui tdd test/ --exit",
     "start": "node startserver.js"
   },
   "repository": {
