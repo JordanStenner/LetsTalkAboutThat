@@ -66,11 +66,29 @@ async function removePost(postTitle){
     }
 }
 
+function formatDate(date){
+    date = new Date(date);
+    let day = date.getDate();
+    let month = (date.getMonth() + 1);
+    day = day > 9 ? day : "0" + day;
+    month = month > 9 ? month : "0" + month;
+
+    date2 = day + "-" +
+            month + "-" +
+            date.getFullYear() + " " + 
+               ('0' + date.getHours()).slice(-2) + ":" + 
+               ('0' + date.getMinutes()).slice(-2) + ":" + 
+               ('0' + date.getSeconds()).slice(-2) + ' ' + 
+               (date.getHours() < 12 ? 'AM' : 'PM');
+    return date2.toString();
+}
+
 
 module.exports.createPost = createPost;
 module.exports.getPost = getPost;
 module.exports.removePost = removePost;
 module.exports.getPostWithID = getPostWithID;
+module.exports.formatDate = formatDate;
 
 module.exports.getTopic = getTopic;
 module.exports.getAllTopics = getAllTopics;

@@ -202,6 +202,16 @@ suite("Tests for Post Logic", function(){
         chai.assert.equal(topic.topic_title, topicArr[1].topic_title, "Topic titles should be equal");
         chai.assert.equal(topicArr.length, 2, "Number of topics in the database should equal 2");
     });
+
+    test("Test the formatDate function", function(){
+        let date = new Date(2020, 11, 28, 12, 30, 0);
+        let clock = sinon.useFakeTimers(date);
+
+        let formattedDate = Post_Logic.formatDate(date);
+
+        chai.assert.equal(formattedDate, "28-12-2020 12:30:00 PM", "formatDate did not output the correct value");
+        clock.restore();
+    });
 });
 
 suite("Test chatroom logic", function(){
@@ -213,9 +223,8 @@ suite("Test chatroom logic", function(){
         console.log("Sinon date set")
     });
 
-    suiteTeardown(function(done){
+    suiteTeardown(function(){
         clock.restore();
-        done();
     });
 
     test("Test formatMessageContent function", function(){
@@ -234,55 +243,3 @@ suite("Test chatroom logic", function(){
         chai.assert.equal(time, "12:30:PM", "Message content time should equal 12:30:PM");
     });
 });
-
-// suite("Test routes functions", function(){
-//     var testEmail ="Testing@Unit.Test";
-//     var testUsername = "TestUser";
-
-//     suiteSetup(function(){
-//         mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true});
-//         console.log("DB ReadyState: " + mongoose.connection.readyState);
-//     });
-
-//     suiteTeardown(function(){
-//         mongoose.connection.close();
-//     });
-
-//     setup(async function(){
-//         try {
-//             const newuser = new User({
-//                 username: testUsername, 
-//                 email: testEmail,
-//                 password: "testPassword"
-//             })
-//             let saveUser = await newuser.save();
-//             //console.log(saveUser);
-//         }
-//         catch (err){
-//             console.log("err" + err);
-//         }
-//     });
-
-//     teardown(async function(){
-//         let testUser = await User.findOne({email: testEmail});
-//         if(!testUser){
-//             console.log("User already deleted by test")
-//         }
-//         else{
-//             await User.deleteOne({email: testEmail}, function(err){
-//                 if(err) console.log(err);
-//                 console.log("Test user deleted");
-//             });
-//         }
-
-//     });
-
-//     // test("GET loadLanding", function(){
-//     //     let request = {};
-//     //     let response = {};
-//     //     response.send = sinon.spy();
-
-//     //     routes.loadLanding(request, response);
-//     //     chai.assert.isTrue(response.send.loadLanding);
-//     // });
-// });

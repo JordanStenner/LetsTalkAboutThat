@@ -1,4 +1,4 @@
-const env = process.env.NODE_ENV || "development";
+const env = process.env.NODE_ENV || "production";
 let Chatroom_Logic = require("./static/scripts/chatroom_logic");
 let routes = require("./routes");
 

@@ -26,6 +26,9 @@ async function chatroom(request, response){
 
         return response.render("chatroom", {post: post, username: username});
     }
+    else {
+        return response.redirect("/")
+    }
 }
 
 async function homepage(request, response){
@@ -48,7 +51,7 @@ async function login(request, response){
     let user = await User_Logic.getUserUsingEmail(email);
         
     if(user == null){
-        console.log("User does not exist");
+        //console.log("User does not exist");
         return response.render("landing", {error:"User does not exist"});
     }
 
@@ -56,12 +59,12 @@ async function login(request, response){
         if(err) throw err;
 
         if(isMatch == true){
-            console.log("passwords match");
+            //console.log("passwords match");
             Server_Logic.setSession(request, user.username, email)
             return response.redirect("/home");
         }
         else{
-            console.log("passwords dont match");
+            //console.log("passwords dont match");
             return response.render("landing", {error:"Incorrect Password"});
         }
     })
@@ -89,10 +92,9 @@ async function register(request, response){
         }
         else {
             let statusCode = await User_Logic.registerAccount(username, email, password);
-            console.log(statusCode);
             if(statusCode == 200){
                 Server_Logic.setSession(request, username, email);
-                console.log(request.session.username);
+                //console.log(request.session.username);
                 return response.redirect("/home");
             }
             else{
@@ -174,9 +176,8 @@ async function findPosts(topic){
     try{
     let post = await Post.find({topic: topic._id}).sort({"date_posted": "desc"});
         for(i = 0; i < post.length; i++){
-            post[i].formatted_date = formatDate(post[i].date_posted);
+            post[i].formatted_date = Post_Logic.formatDate(post[i].date_posted);
             postsArr.push(post[i]);
-            console.log(post[i]._id);
         }
     }
     catch (err){
@@ -184,23 +185,6 @@ async function findPosts(topic){
     }
 
     return postsArr;
-}
-
-function formatDate(date){
-    date = new Date(date);
-    let day = date.getDate();
-    let month = (date.getMonth() + 1);
-    day = day > 9 ? day : "0" + day;
-    month = month > 9 ? month : "0" + month;
-
-    date2 = day + "-" +
-            month + "-" +
-            date.getFullYear() + " " + 
-               ('0' + date.getHours()).slice(-2) + ":" + 
-               ('0' + date.getMinutes()).slice(-2) + ":" + 
-               ('0' + date.getSeconds()).slice(-2) + ' ' + 
-               (date.getHours() < 12 ? 'AM' : 'PM');
-    return date2.toString();
 }
 
 async function createPost(request, response){
@@ -213,7 +197,6 @@ async function createPost(request, response){
     let topic = await Post_Logic.getTopic(topicName);
    
     let statusCode = await Post_Logic.createPost(topic._id, user.username, postTitle, postContent);
-    console.log(statusCode);
     if(statusCode == 200){
         return response.redirect("/posts/" + topicName + "/1");
     }

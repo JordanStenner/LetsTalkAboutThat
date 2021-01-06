@@ -1,9 +1,11 @@
 let chai = require("chai");
 let chaiHttp = require("chai-http");
 let cheerio = require("cheerio");
-//var request = require("supertest");
+
 let server = require("../startserver");
+const { deleteOne } = require("../static/schemas/user_schema");
 const User = require("../static/schemas/user_schema");
+const Post = require("../static/schemas/post_schema");
 const expect = chai.expect;
 
 
@@ -13,6 +15,7 @@ suite("Test routes", function(){
     const email = "inttesting@testing.test";
 
     teardown(async function(){
+        this.timeout(10000);
         let testUser = await User.findOne({email: email});
         if(!testUser){
             console.log("User did not exist");
@@ -37,14 +40,97 @@ suite("Test routes", function(){
 
     });
 
-    // test("Test GET logout route", function(done){
-    //     let app = server.app;
-    //     chai.request(app).get("/logout")
-    //         .end(function(error, response){
-    //             chai.assert.equal(response.status, 200, "Wrong status code");
-    //         });
-    //     done();
-    // });
+    test("Test GET home route without active session", async function(){
+        let app = server.app;
+        let response = await chai.request(app).get("/home");
+
+        chai.assert.equal(response.status, 200, "Wrong status code");
+        expect(response).to.redirectTo(/\//);
+    });
+
+    test("Test GET home route with active session", async function(){
+        let app = server.app;
+
+        var agent = chai.request.agent(app);
+
+        await agent.post("/login")
+        .type("form")
+        .send({
+            email: 'testingemail@test.test', 
+            password: 'password'
+        })
+        .then(async function(response){
+            await agent.get("/home")
+            .then(function(res){
+                chai.assert.equal(res.status, 200, "Wrong status code");
+            });
+        });
+    });
+
+    test("Test GET posts route without active session", async function(){
+        let app = server.app;
+        let response = await chai.request(app).get("/posts/Politics/1");
+
+        chai.assert.equal(response.status, 200, "Wrong status code");
+        expect(response).to.redirectTo(/\//);
+    });
+
+    test("Test GET posts route with active session", async function(){
+        let app = server.app;
+
+        var agent = chai.request.agent(app);
+
+        await agent.post("/login")
+        .type("form")
+        .send({
+            email: 'testingemail@test.test', 
+            password: 'password'
+        })
+        .then(async function(response){
+            await agent.get("/posts/Politics/1")
+            .then(function(res){
+                let $ = cheerio.load(res.text);
+                let postTitle = $('.post-title').html();
+
+                chai.assert.equal(res.status, 200, "Wrong status code");
+                chai.assert.equal(postTitle, "First Politics Post", "Posts were not output");
+            });
+        });
+        agent.close();
+    });
+
+    test("Test GET createaccount route without active session", async function(){
+        let app = server.app;
+        let response = await chai.request(app).get("/createaccount");
+
+        let $ = cheerio.load(response.text);
+        let title = $('#create-account-title').html();
+
+        chai.assert.equal(response.status, 200, "Wrong status code");
+        chai.assert.equal(title, "Create an account", "Route did not load the create account page");
+        
+    });
+
+    test("Test GET home route with active session", async function(){
+        let app = server.app;
+
+        var agent = chai.request.agent(app);
+
+        await agent.post("/login")
+        .type("form")
+        .send({
+            email: 'testingemail@test.test', 
+            password: 'password'
+        })
+        .then(async function(response){
+            await agent.get("/createaccount")
+            .then(function(res){
+                chai.assert.equal(res.status, 200, "Wrong status code");
+                expect(res).to.redirectTo(/\/home/);
+            });
+        });
+        agent.close();
+    });
 
     test("Test GET logout route", async function(){
         let app = server.app;
@@ -57,33 +143,6 @@ suite("Test routes", function(){
         chai.assert.equal(err, "", "Error should be empty");
 
     });
-
-    // test("Test GET home route", function(done){
-    //     let app = server.app;
-    //     chai.request(app).get("/home")
-    //         .end(function(error, response){
-    //             chai.assert.equal(response.status, 200, "Wrong status code");
-    //         });
-    //     done();
-    // });
-
-    // test("Test GET posts route", function(done){
-    //     let app = server.app;
-    //     chai.request(app).get("/posts/:topicname/:page")
-    //         .end(function(error, response){
-    //             chai.assert.equal(response.status, 200, "Wrong status code");
-    //         });
-    //     done();
-    // });
-
-    // test("Test POST createaccount route", function(done){
-    //     let app = server.app;
-    //     chai.request(app).post("/createaccount")
-    //         .end(function(error, response){
-    //             chai.assert.equal(response.status, 200, "Wrong status code");
-    //         });
-    //     done();
-    // });
 
     test("Test POST register route", async function(){
         let app = server.app;
@@ -131,22 +190,82 @@ suite("Test routes", function(){
         expect(response).to.redirectTo(/\/home/);
     });
 
-    // test("Test GET chatroom route", function(done){
-    //     let app = server.app;
-    //     chai.request(app).get("/logout")
-    //         .end(function(error, response){
-    //             chai.assert.equal(response.status, 200, "Wrong status code");
-    //         });
-    //     done();
-    // });
+    test("Test POST createpost route", async function(){
+        let app = server.app;
+        
+        var agent = chai.request.agent(app);
 
-    // test("Test POST createpost route", function(done){
-    //     let app = server.app;
-    //     chai.request(app).post("/createpost/:topicname")
-    //         .end(function(error, response){
-    //             chai.assert.equal(response.status, 200, "Wrong status code");
-    //         });
-    //     done();
-    // });
+        await agent.post("/login")
+        .type("form")
+        .send({
+            email: 'testingemail@test.test', 
+            password: 'password'
+        })
+        .then(async function(response){
+            await agent.post("/createpost/Politics")
+            .type("form")
+            .send({
+                postTitle: "Test post",
+                postContent: "Test post"
+            })
+            .then(async function(res){
+                chai.assert.equal(res.status, 200, "Wrong status code");
+                expect(res).to.redirectTo(/\/posts\/Politics\/1/);
 
+                await agent.get("/posts/Politics/1")
+                .then(function(postRes){
+                    let $ = cheerio.load(postRes.text);
+                    let postTitle = $('.post-title').html();
+                    chai.assert.equal(postTitle, "Test post", "createpost route does not create post");
+                });
+            });
+        });
+        agent.close();
+        await Post.deleteOne({post_title: "Test post"}, function(err){
+            if(err) console.log(err);
+            console.log("Test post deleted");
+
+        });
+    });
+
+    test("Test GET chatroom route without active session", async function(){
+        let app = server.app;
+        let postID = "5ff09d56a78dee001790cc47";
+        let username = "testingusername";
+
+        let response = await chai.request(app).get("/chatroom/" + postID + "/" + username);
+
+        let $ = cheerio.load(response.text);
+        let heading = $('.heading').html();
+
+        chai.assert.equal(response.status, 200, "Wrong status code");
+        expect(response).to.redirectTo(/\//);
+        chai.assert.equal(heading, "Let's Talk About That", "Route did not send the user to homepage");
+    });
+
+    test("Test GET chatroom route with active session", async function(){
+        let app = server.app;
+        let postID = "5ff09d56a78dee001790cc47";
+        let username = "testingusername";
+
+        var agent = chai.request.agent(app);
+
+        await agent.post("/login")
+        .type("form")
+        .send({
+            email: 'testingemail@test.test', 
+            password: 'password'
+        })
+        .then(async function(response){
+            await agent.get("/chatroom/" + postID + "/" + username)
+            .then(async function(res){
+                let $ = cheerio.load(res.text);
+                let postTitle = $('#post-title').html();
+
+                chai.assert.equal(res.status, 200, "Wrong status code");
+                chai.assert.equal(postTitle, "First Politics Post", "Route did not send the user to chatroom");
+            });
+        });
+        agent.close();
+    });
 });
