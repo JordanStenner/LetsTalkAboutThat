@@ -65,7 +65,6 @@ suite("Tests for User Logic", function(){
         let testRegisterEmail = "Testing1@Unit.Test";
         let statusCode = await User_Logic.registerAccount("TestUser1", testRegisterEmail, "Testpassword");
         let newuser = await User.findOne({email: testRegisterEmail});
-        //console.log("User email is: " +newuser.email);
 
         chai.assert.equal(statusCode, 200, "Status code should be 200 after creating a user");
         chai.assert.equal(newuser.email, testRegisterEmail, "User email should match - Successfully saved to database");
@@ -152,7 +151,6 @@ suite("Tests for Post Logic", function(){
         const newPostTitle = "Post Title";
         let statusCode = await Post_Logic.createPost(politicsID, author, newPostTitle, postContent);
         let newpost = await Post.findOne({post_title: newPostTitle});
-        //console.log("User email is: " +newuser.email);
 
         chai.assert.equal(statusCode, 200, "Status code should be 200 after creating a post");
         chai.assert.equal(newpost.post_title, newPostTitle, "Post titles should match - Successfully saved to database");
