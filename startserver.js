@@ -15,7 +15,7 @@ if(env == "test"){
 else {
     url = "mongodb+srv://JordanStenner:LTATDB@letstalkaboutthat.imvzx.mongodb.net/LetsTalkAboutThat?retryWrites=true&w=majority"
 }
-//let url = "mongodb+srv://JordanStenner:LTATDB@letstalkaboutthat.imvzx.mongodb.net/LetsTalkAboutThat?retryWrites=true&w=majority"
+
 mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true});
 
 const port = process.env.PORT || 9000;

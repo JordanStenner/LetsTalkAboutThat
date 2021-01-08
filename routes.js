@@ -140,7 +140,7 @@ async function posts(request, response){
         user = request.session.username;
 
         let topic = await Post_Logic.getTopic(topicName);
-        let postsArr = await findPosts(topic);
+        let postsArr = await Post_Logic.findPosts(topic);
 
         paginatedContent.page = page;
         paginatedContent.pageStart = pageStart;
@@ -171,21 +171,6 @@ async function posts(request, response){
     }
 }
 
-async function findPosts(topic){
-    let postsArr = [];
-    try{
-    let post = await Post.find({topic: topic._id}).sort({"date_posted": "desc"});
-        for(i = 0; i < post.length; i++){
-            post[i].formatted_date = Post_Logic.formatDate(post[i].date_posted);
-            postsArr.push(post[i]);
-        }
-    }
-    catch (err){
-        console.log(err);
-    }
-
-    return postsArr;
-}
 
 async function createPost(request, response){
     let email = request.session.email;

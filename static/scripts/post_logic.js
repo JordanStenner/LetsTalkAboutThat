@@ -36,6 +36,22 @@ async function getPostWithID(postID){
     return post;
 }
 
+async function findPosts(topic){
+    let postsArr = [];
+    try{
+    let post = await Post.find({topic: topic._id}).sort({"date_posted": "desc"});
+        for(i = 0; i < post.length; i++){
+            post[i].formatted_date = formatDate(post[i].date_posted);
+            postsArr.push(post[i]);
+        }
+    }
+    catch (err){
+        console.log(err);
+    }
+
+    return postsArr;
+}
+
 async function getTopic(topicTitle){
     let topic = await Topic.findOne({topic_title: topicTitle});
     return topic;
@@ -88,6 +104,7 @@ module.exports.createPost = createPost;
 module.exports.getPost = getPost;
 module.exports.removePost = removePost;
 module.exports.getPostWithID = getPostWithID;
+module.exports.findPosts = findPosts;
 module.exports.formatDate = formatDate;
 
 module.exports.getTopic = getTopic;
