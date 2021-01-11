@@ -10,25 +10,27 @@ var path = require("path");
 var http = require("http");
 
 if(env == "test"){
+    //Use this database if running tests
     url = "mongodb+srv://JordanStenner:LTATDB@letstalkaboutthat.imvzx.mongodb.net/LetsTalkAboutThatTesting?retryWrites=true&w=majority"
 }
 else {
     url = "mongodb+srv://JordanStenner:LTATDB@letstalkaboutthat.imvzx.mongodb.net/LetsTalkAboutThat?retryWrites=true&w=majority"
 }
-
+//Connect to database
 mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true});
 
 const port = process.env.PORT || 9000;
 let app = express();
 let server = http.createServer(app);
 
-
+//Express configurations
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "static")));
 app.set("view engine", "ejs");
 
 app.use(express.urlencoded({extended: true}));
 
+//Session configs
 app.use(session({     
     key: 'user_id',
     secret: 'SECRET',
@@ -39,6 +41,7 @@ app.use(session({
     } 
 }));
 
+//Routes
 app.get("/", routes.loadLanding);
 app.get("/createaccount", routes.createAccount);
 app.get("/home", routes.homepage);
@@ -55,12 +58,14 @@ server.listen(port, function(){
     console.log("Listening on " + port);
 });
 
+//Connect server to socketio
 let io = socketio(server);
 
+//On connection socket handler
 io.on("connection", function(socket){
     const bot = "LTAT BOT";
-    socket.emit("test", "User connected");
 
+    //Handler for user joining a room
     socket.on("joinedRoom", function({username, postID}){
         let user = Chatroom_Logic.joinedUser(socket.id, username, postID);
         console.log(user.username + " Has joined the chat");
@@ -70,6 +75,7 @@ io.on("connection", function(socket){
         socket.broadcast.to(user.postID).emit("sendMessage", Chatroom_Logic.formatMessageContent(bot, username + " has joined the discussion"));
     });
 
+    //Handler for user submitted message
     socket.on("userMessage", function(message){
         const user = Chatroom_Logic.getUserFromSocket(socket.id);
 
@@ -78,6 +84,7 @@ io.on("connection", function(socket){
         }
     });
 
+    //Handler for user disconnecting
     socket.on("disconnect", function(){
         let user = Chatroom_Logic.userDisconnect(socket.id);
 

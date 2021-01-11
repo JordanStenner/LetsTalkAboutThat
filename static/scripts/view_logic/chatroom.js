@@ -59,8 +59,6 @@ function createMessageHTML(content){
     mainDiv.appendChild(inputMessage);
 
     document.querySelector(".chat-content").appendChild(mainDiv);
-
-
 }
 
 socket.emit("joinedRoom", {username, postID});

@@ -6,7 +6,6 @@ const routes = require("../routes");
 const User_Logic = require("../static/scripts/user_logic");
 const Post_Logic = require("../static/scripts/post_logic");
 const Chatroom_Logic = require("../static/scripts/chatroom_logic");
-const Server_Logic = require("../static/scripts/server_logic");
 
 const User = require("../static/schemas/user_schema");
 const Post = require("../static/schemas/post_schema");
@@ -21,16 +20,19 @@ suite("Tests for User Logic", function(){
     var testEmail ="Testing@Unit.Test";
     var testUsername = "TestUser";
 
+    //Connect to database 
     suiteSetup(function(){
         mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true});
         console.log("DB ReadyState: " + mongoose.connection.readyState);
     });
 
+    //Close the connection
     suiteTeardown(function(done){
         mongoose.connection.close();
         done();
     });
     
+    //Create test user
     setup(async function(){
         this.timeout(10000);
         try {
@@ -47,6 +49,7 @@ suite("Tests for User Logic", function(){
         }
     });
 
+    //Delete the test user if not already deleted
     teardown(async function(){
         let testUser = await User.findOne({email: testEmail});
         if(!testUser){
@@ -101,22 +104,27 @@ suite("Tests for User Logic", function(){
      });
 });
 
+//Test suite for Post_Logic functions
 suite("Tests for Post Logic", function(){
     const topicTitle = "Politics";
     const politicsID = "5fe0dced9ef93c549c12c82e";
     const author = "Unit Test";
     const postTitle = "Unit Test Post";
     const postContent = "Unit Test Content";
+
+    //Connect to database 
     suiteSetup(function(){
         mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true});
         console.log("DB ReadyState: " + mongoose.connection.readyState);
     });
 
+    //Close the connection
     suiteTeardown(function(done){
         mongoose.connection.close();
         done();
     });
     
+    //Create new post
     setup(async function(){
         this.timeout(10000);
         try {
@@ -127,13 +135,13 @@ suite("Tests for Post Logic", function(){
                 post_content: postContent
             })
             let savePost = await newpost.save();
-            //console.log(saveUser);
         }
         catch (err){
             console.log("err" + err);
         }
     });
 
+    //Delete the test post if not already deleted
     teardown(async function(){
         let testPost = await Post.findOne({post_title: postTitle});
         if(!testPost){
@@ -212,6 +220,7 @@ suite("Tests for Post Logic", function(){
     });
 });
 
+//Test suite for Chatroom_Logic functions
 suite("Test chatroom logic", function(){
     let clock;
     suiteSetup(function(){
